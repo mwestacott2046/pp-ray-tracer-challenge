@@ -62,7 +62,7 @@ namespace RayTracer
             return HashCode.Combine(X, Y, Z, W);
         }
 
-        public object Add(RtTuple addTuple)
+        public RtTuple Add(RtTuple addTuple)
         {
             return new RtTuple(this.X + addTuple.X,
                 this.Y + addTuple.Y,
