@@ -59,7 +59,7 @@ namespace RayTracer
 
         public Colour Multiply(Colour colour)
         {
-            return new Colour(this.R *colour.R, this.G * colour.G, this.B * colour.G);
+            return new Colour(this.R *colour.R, this.G * colour.G, this.B * colour.B);
         }
     }
 }
