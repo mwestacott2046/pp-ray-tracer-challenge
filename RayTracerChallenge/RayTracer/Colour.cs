@@ -1,0 +1,65 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace RayTracer
+{
+    public class Colour
+    {
+        public Colour(double r, double g, double b)
+        {
+            R = r;
+            G = g;
+            B = b;
+        }
+
+        public double R { get; set; }
+        public double G { get; set; }
+        public double B { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if (obj != null)
+            {
+                if (obj is Colour compareColour)
+                {
+                    return DoubleUtils.DoubleEquals(this.R, compareColour.R)
+                           && DoubleUtils.DoubleEquals(this.G, compareColour.G)
+                           && DoubleUtils.DoubleEquals(this.B, compareColour.B);
+                }
+            }
+
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(R, G, B);
+        }
+
+        public override string ToString()
+        {
+            return $"(R: {R}, G: {G}, B{B})";
+        }
+
+        public Colour Add(Colour add)
+        {
+            return new Colour(this.R + add.R, this.G + add.G, this.B + add.B);
+        }
+
+        public Colour Subtract(Colour sub)
+        {
+            return new Colour(this.R - sub.R, this.G - sub.G, this.B - sub.B);
+        }
+
+        public Colour Multiply(double scalar)
+        {
+            return new Colour(this.R * scalar,this.G * scalar, this.B * scalar);
+        }
+
+        public Colour Multiply(Colour colour)
+        {
+            return new Colour(this.R *colour.R, this.G * colour.G, this.B * colour.G);
+        }
+    }
+}
