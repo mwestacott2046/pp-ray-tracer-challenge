@@ -18,19 +18,19 @@ namespace RayTracer
             W = w;
         }
 
-        public static RtTuple Point(in double x, in double y, in double z)
+        public static Point Point(in double x, in double y, in double z)
         {
-            return new RtTuple(x, y, z, PointW);
+            return new Point(x, y, z);
         }
-        public static RtTuple Vector(in double x, in double y, in double z)
+        public static Vector Vector(in double x, in double y, in double z)
         {
-            return new RtTuple(x, y, z, VectorW);
+            return new Vector(x, y, z);
         }
 
-        public double X { get; set; }
-        public double Y { get; set; }
-        public double Z { get; set; }
-        public double W { get; set; }
+        public double X { get; private set; }
+        public double Y { get; private set; }
+        public double Z { get; private set; }
+        public double W { get; private set; }
 
         public bool IsPoint()
         {
@@ -134,6 +134,20 @@ namespace RayTracer
             return Vector(Y * other.Z - Z * other.Y,
                             Z * other.X - X * other.Z,
                             X * other.Y - Y * other.X);
+        }
+    }
+
+    public class Vector : RtTuple
+    {
+        public Vector(double x, double y, double z) : base(x, y, z, 0.0)
+        {
+        }
+    }
+
+    public class Point : RtTuple
+    {
+        public Point(double x, double y, double z) : base(x, y, z, 1.0)
+        {
         }
     }
 }
