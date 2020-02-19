@@ -20,11 +20,6 @@ namespace RayTracer
         {
         }
 
-        public double[,] GetMatrix()
-        {
-            return _matrixData;
-        }
-
         public double Get(int row, int col)
         {
             return _matrixData[row,col];
@@ -262,5 +257,68 @@ namespace RayTracer
             return builder.ToString();
         }
 
+        public static Matrix Scaling(double x, double y, double z)
+        {
+            var scaling = IdentityMatrix;
+            scaling.Set(0,0,x);
+            scaling.Set(1, 1, y);
+            scaling.Set(2, 2, z);
+            return scaling;
+        }
+
+        public static Matrix RotationX(double radians)
+        {
+            var rotationX = IdentityMatrix;
+
+            var sin = Math.Sin(radians);
+            var cos = Math.Cos(radians);
+
+            rotationX.Set(2,1, sin);
+            rotationX.Set(1, 2, -sin);
+            rotationX.Set(2, 2, cos);
+            rotationX.Set(1, 1, cos);
+            return rotationX;
+        }
+
+        public static Matrix RotationY(double radians)
+        {
+            var rotationY = IdentityMatrix;
+            var sin = Math.Sin(radians);
+            var cos = Math.Cos(radians);
+
+            rotationY.Set(0, 2, sin);
+            rotationY.Set(2, 0, -sin);
+            rotationY.Set(0, 0, cos);
+            rotationY.Set(2, 2, cos);
+            return rotationY;
+
+        }
+
+        public static Matrix RotationZ(double radians)
+        {
+            var rotationZ = IdentityMatrix;
+            var sin = Math.Sin(radians);
+            var cos = Math.Cos(radians);
+
+            rotationZ.Set(0, 1, sin);
+            rotationZ.Set(0, 1, -sin);
+            rotationZ.Set(0, 0, cos);
+            rotationZ.Set(1, 1, cos);
+            return rotationZ;
+        }
+
+        public static Matrix Shearing(double xy, double xz, double yx, double yz, double zx, double zy)
+        {
+            var shearing = IdentityMatrix;
+
+            shearing.Set(0, 1, xy);
+            shearing.Set(0, 2, xz);
+            shearing.Set(1, 0, yx);
+            shearing.Set(1, 2, yz);
+            shearing.Set(2, 0, zx);
+            shearing.Set(2, 1, zy);
+
+            return shearing;
+        }
     }
 }
