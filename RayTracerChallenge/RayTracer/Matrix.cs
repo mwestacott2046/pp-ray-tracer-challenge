@@ -24,6 +24,7 @@ namespace RayTracer
         {
             return _matrixData;
         }
+
         public double Get(int row, int col)
         {
             return _matrixData[row,col];
@@ -216,10 +217,10 @@ namespace RayTracer
 
             var inverseMatrix = new Matrix(RowCount,ColCount);
 
-            for (int row = 0; row < RowCount; row++)
+            for (var row = 0; row < RowCount; row++)
             {
 
-                for (int col = 0; col < ColCount; col++)
+                for (var col = 0; col < ColCount; col++)
                 {
                     var coFactor = CoFactor(row, col);
                     inverseMatrix.Set(col,row, coFactor / determinant);
@@ -228,5 +229,38 @@ namespace RayTracer
             
             return inverseMatrix;
         }
+
+        public static Matrix operator *(Matrix a, Matrix b) => a.Multiply(b);
+        public static RtTuple operator *(Matrix m, RtTuple t) => m.Multiply(t);
+
+        public static Matrix Translation(double x, double y, double z)
+        {
+            var translation = IdentityMatrix;
+            translation.Set(0, 3, x);
+            translation.Set(1, 3, y);
+            translation.Set(2, 3, z);
+
+            return translation;
+        }
+
+        public override string ToString()
+        {
+            var builder = new StringBuilder();
+            for (int row = 0; row < RowCount; row++)
+            {
+                var values = new List<string>();
+                for (int col = 0; col < ColCount; col++)
+                {
+                    values.Add($"{_matrixData[row, col]:0.0000}");
+                }
+
+                builder.Append("[ ");
+                builder.Append(string.Join(", ",  values));
+                builder.AppendLine(" ]");
+            }
+
+            return builder.ToString();
+        }
+
     }
 }

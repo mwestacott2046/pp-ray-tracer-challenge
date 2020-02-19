@@ -341,5 +341,64 @@ namespace RayTracer.UnitTests
             Assert.AreEqual(matrixA, result);
         }
 
+        [Ignore("Experimental")]
+        [Test]
+        public void ExploreMatrices()
+        {
+            var inverseIdentity = Matrix.IdentityMatrix.Inverse();
+            Assert.NotNull(inverseIdentity);
+
+            var matrixA = new Matrix(new double[,]
+            {
+                {3, 9, 7, 3},
+                {3, -8, 2, -9},
+                {-4, 4, 4, 1},
+                {-6, 5, -1, 1}
+            });
+
+            var multiplyByInverse = matrixA.Multiply(matrixA.Inverse());
+            Assert.NotNull(inverseIdentity);
+        }
+
+        [Test]
+        public void MultiplyByTranslationMatrix()
+        {
+            var translation = Matrix.Translation(5, -3, 2);
+            var point = RtTuple.Point(-3, 4, 5);
+            var result = translation * point;
+            
+            var expectedResult = RtTuple.Point(2, 1, 7);
+            Assert.AreEqual(expectedResult, result);
+        }
+
+        [Test]
+        public void ToStringTest()
+        {
+            var matrixA = new Matrix(new double[,]
+            {
+                {3, 9, 7, 3},
+                {3, -8, 2, -9},
+                {-4, 4, 4, 1},
+                {-6, 5, -1, 1}
+            });
+            var result = matrixA.ToString();
+            var expectedResult =
+                "[ 3.0000, 9.0000, 7.0000, 3.0000 ]\r\n[ 3.0000, -8.0000, 2.0000, -9.0000 ]\r\n"
+                +"[ -4.0000, 4.0000, 4.0000, 1.0000 ]\r\n[ -6.0000, 5.0000, -1.0000, 1.0000 ]\r\n";
+            Assert.AreEqual(expectedResult, result);
+
+        }
+
+        [Test]
+        public void MultiplyByInverseTranslationMatrix()
+        {
+            var translation = Matrix.Translation(5, -3, 2);
+            var inv = translation.Inverse();
+            var point = RtTuple.Point(-3, 4, 5);
+            var result = inv * point;
+
+            var expectedResult = RtTuple.Point(-8, 7, 3);
+            Assert.AreEqual(expectedResult, result);
+        }
     }
 }
