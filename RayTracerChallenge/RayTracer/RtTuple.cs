@@ -144,6 +144,11 @@ namespace RayTracer
 
         public static RtTuple operator +(RtTuple tuple) => tuple;
         public static RtTuple operator -(RtTuple tuple) => tuple.Negate();
+
+        public Point ToPoint()
+        {
+            return new Point(this.X,this.Y, this.Z);
+        }
     }
 
     public class Vector : RtTuple
