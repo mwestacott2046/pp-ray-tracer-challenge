@@ -135,6 +135,15 @@ namespace RayTracer
                             Z * other.X - X * other.Z,
                             X * other.Y - Y * other.X);
         }
+
+        public double[] AsArray()
+        {
+            return new[] {X, Y, Z, W};
+        }
+
+
+        public static RtTuple operator +(RtTuple tuple) => tuple;
+        public static RtTuple operator -(RtTuple tuple) => tuple.Negate();
     }
 
     public class Vector : RtTuple

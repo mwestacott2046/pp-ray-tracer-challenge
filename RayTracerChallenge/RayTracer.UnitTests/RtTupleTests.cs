@@ -113,6 +113,14 @@ namespace RayTracer.UnitTests
             Assert.AreEqual(new RtTuple(-1, 2, -3, 4), result);
         }
 
+        [Test(Description = "Scenario: Negating a tuple with operator")]
+        public void NegateTupleOperator()
+        {
+            var tuple = new RtTuple(1, -2, 3, -4);
+            var result = -tuple;
+            Assert.AreEqual(new RtTuple(-1, 2, -3, 4), result);
+        }
+
         [Test(Description = "Multiplying a tuple by a scalar")]
         public void MultiplyTupleByScalar()
         {
