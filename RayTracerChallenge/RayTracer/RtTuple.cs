@@ -18,15 +18,6 @@ namespace RayTracer
             W = w;
         }
 
-        public static Point Point(in double x, in double y, in double z)
-        {
-            return new Point(x, y, z);
-        }
-        public static Vector Vector(in double x, in double y, in double z)
-        {
-            return new Vector(x, y, z);
-        }
-
         public double X { get; private set; }
         public double Y { get; private set; }
         public double Z { get; private set; }
@@ -131,9 +122,9 @@ namespace RayTracer
 
         public RtTuple Cross(RtTuple other)
         {
-            return Vector(Y * other.Z - Z * other.Y,
-                            Z * other.X - X * other.Z,
-                            X * other.Y - Y * other.X);
+            return new Vector(Y * other.Z - Z * other.Y,
+                                Z * other.X - X * other.Z,
+                                X * other.Y - Y * other.X);
         }
 
         public double[] AsArray()
@@ -148,20 +139,6 @@ namespace RayTracer
         public Point ToPoint()
         {
             return new Point(this.X,this.Y, this.Z);
-        }
-    }
-
-    public class Vector : RtTuple
-    {
-        public Vector(double x, double y, double z) : base(x, y, z, 0.0)
-        {
-        }
-    }
-
-    public class Point : RtTuple
-    {
-        public Point(double x, double y, double z) : base(x, y, z, 1.0)
-        {
         }
     }
 }
