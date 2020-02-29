@@ -13,9 +13,9 @@ namespace RayTracer
             B = b;
         }
 
-        public double R { get; set; }
-        public double G { get; set; }
-        public double B { get; set; }
+        public double R { get; private set; }
+        public double G { get; private set; }
+        public double B { get; private set; }
 
         public override bool Equals(object obj)
         {

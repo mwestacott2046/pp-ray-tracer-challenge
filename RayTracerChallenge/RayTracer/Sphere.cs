@@ -4,7 +4,7 @@ using System.Text;
 
 namespace RayTracer
 {
-    public class Sphere
+    public class Sphere :ISceneObject
     {
         public Sphere()
         {
