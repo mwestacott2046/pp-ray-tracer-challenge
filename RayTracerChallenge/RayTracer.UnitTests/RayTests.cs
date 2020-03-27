@@ -114,5 +114,27 @@ namespace RayTracer.UnitTests
             Assert.AreEqual(sphere, xs[1].Object);
         }
 
+        [Test]
+        public void TranslatingARay()
+        {
+            var ray = new Ray(new Point(1,2,3), new Vector(0,1,0));
+            var m = Matrix.Translation(3, 4, 5);
+
+            var ray2 = ray.Transform(m);
+            Assert.AreEqual(new Point(4,6,8), ray2.Origin);
+            Assert.AreEqual(new Vector(0, 1, 0), ray2.Direction);
+        }
+
+        [Test]
+        public void ScalingARay()
+        {
+            var ray = new Ray(new Point(1, 2, 3), new Vector(0, 1, 0));
+            var m = Matrix.Scaling(2, 3, 4);
+
+            var ray2 = ray.Transform(m);
+            Assert.AreEqual(new Point(2, 6, 12), ray2.Origin);
+            Assert.AreEqual(new Vector(0, 3, 0), ray2.Direction);
+        }
+
     }
 }

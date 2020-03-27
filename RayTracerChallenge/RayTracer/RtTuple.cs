@@ -140,5 +140,10 @@ namespace RayTracer
         {
             return new Point(this.X,this.Y, this.Z);
         }
+
+        public Vector ToVector()
+        {
+            return new Vector(this.X, this.Y, this.Z);
+        }
     }
 }
