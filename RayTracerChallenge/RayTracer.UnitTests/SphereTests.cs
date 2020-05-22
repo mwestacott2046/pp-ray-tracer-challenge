@@ -49,5 +49,125 @@ namespace RayTracer.UnitTests
             Assert.AreEqual(0, xs.Length);
         }
 
+        [Test]
+        public void NormalOnSpherePointingInXDirection()
+        {
+            var s = new Sphere();
+            var point = new Point(1,0,0);
+
+            var result = s.NormalAt(point);
+
+            Assert.AreEqual(new Vector(1,0,0), result);
+        }
+
+        [Test]
+        public void NormalOnSpherePointingInYDirection()
+        {
+            var s = new Sphere();
+            var point = new Point(0, 1, 0);
+
+            var result = s.NormalAt(point);
+
+            Assert.AreEqual(new Vector(0, 1, 0), result);
+        }
+
+        [Test]
+        public void NormalOnSpherePointingInZDirection()
+        {
+            var s = new Sphere();
+            var point = new Point(0, 0, 1);
+
+            var result = s.NormalAt(point);
+
+            Assert.AreEqual(new Vector(0, 0, 1), result);
+        }
+
+        [Test]
+        public void NormalOnSphereAtNonAxialPoint()
+        {
+            var s = new Sphere();
+            var point = new Point(Math.Sqrt(3) / 3, Math.Sqrt(3) / 3, Math.Sqrt(3) / 3);
+
+            var result = s.NormalAt(point);
+
+            Assert.AreEqual(new Vector(Math.Sqrt(3)/3, Math.Sqrt(3) / 3, Math.Sqrt(3) / 3), result);
+        }
+
+        [Test]
+        public void NormalOnSphereIsNormalized()
+        {
+            var s = new Sphere();
+            var point = new Point(Math.Sqrt(3) / 3, Math.Sqrt(3) / 3, Math.Sqrt(3) / 3);
+
+            var result = s.NormalAt(point);
+
+            Assert.AreEqual(result.Normalize(), result);
+        }
+
+        [Test]
+        public void NormalOnTranslatedSphere()
+        {
+            var s = new Sphere
+            {
+                Transform = Matrix.Translation(0, 1, 0)
+            };
+            var point = new Point(0, 1.70711, -0.70711);
+
+            var result = s.NormalAt(point);
+
+            Assert.AreEqual(new Vector(0, 0.70711, -0.70711), result);
+        }
+
+        [Test]
+        public void NormalOnTransformedSphere()
+        {
+            var s = new Sphere();
+            var m1 = Matrix.Scaling(1, 0.5, 1);
+            var m2 = Matrix.RotationZ(Math.PI / 5);
+
+            s.Transform = m1; //* m2;
+            var point = new Point(0, Math.Sqrt(2)/2, -Math.Sqrt(2)/2);
+
+            var result = s.NormalAt(point);
+
+            Assert.AreEqual(new Vector(0, 0.97014, -0.24254), result);
+        }
+
+        [Test]
+        public void NormalOnRotatedSphere()
+        {
+            var s = new Sphere();
+            var m1 = Matrix.Scaling(1, 0.5, 1);
+            var m2 = Matrix.RotationZ(Math.PI);
+
+            s.Transform = m1* m2;
+            var point = new Point(0, Math.Sqrt(2) / 2, -Math.Sqrt(2) / 2);
+
+            var result = s.NormalAt(point);
+
+            Assert.AreEqual(new Vector(0, 0.97014, -0.24254), result);
+        }
+
+        [Test]
+        public void SphereHasDefaultMaterial()
+        {
+            var sphere = new Sphere();
+
+            var expectedMaterial = new Material();
+            Assert.AreEqual(expectedMaterial, sphere.Material);
+        }
+
+        [Test]
+        public void SphereCanBeAssignedAMaterial()
+        {
+            var sphere = new Sphere();
+
+            var material = new Material {Ambient = 1};
+            sphere.Material = material;
+            
+            Assert.AreEqual(material, sphere.Material);
+        }
+
+
     }
 }

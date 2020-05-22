@@ -7,29 +7,6 @@ namespace RayTracer.UnitTests
 {
     public class RtTupleTests
     {
-        [Test(Description = "Scenario: A tuple with w = 1.0 is a point")]
-        public void TupleWith_W_AsOneIsAPoint()
-        {
-            var a = new RtTuple(4.3, -4.2, 3.1, 1.0);
-            Assert.IsTrue(DoubleUtils.DoubleEquals(a.X, 4.3), "X values do not match");
-            Assert.IsTrue(DoubleUtils.DoubleEquals(a.Y, -4.2), "Y values do not match");
-            Assert.IsTrue(DoubleUtils.DoubleEquals(a.Z, 3.1), "Z values do not match");
-            Assert.IsTrue(DoubleUtils.DoubleEquals(a.W, 1.0), "W values do not match");
-            Assert.IsTrue(a.IsPoint());
-            Assert.IsFalse(a.IsVector());
-        }
-
-        [Test(Description = "Scenario: A tuple with w = 0.0 is a vector")]
-        public void TupleWith_W_AsZeroIsAPoint()
-        {
-            var a = new RtTuple(4.3, -4.2, 3.1, 0.0);
-            Assert.IsTrue(DoubleUtils.DoubleEquals(a.X, 4.3), "X values do not match");
-            Assert.IsTrue(DoubleUtils.DoubleEquals(a.Y, -4.2), "Y values do not match");
-            Assert.IsTrue(DoubleUtils.DoubleEquals(a.Z, 3.1), "Z values do not match");
-            Assert.IsTrue(DoubleUtils.DoubleEquals(a.W, 0.0), "W values do not match");
-            Assert.IsFalse(a.IsPoint());
-            Assert.IsTrue(a.IsVector());
-        }
 
         [Test(Description = "Scenario: point() creates tuples with w = 1")]
         public void CreatePoint()
@@ -230,6 +207,28 @@ namespace RayTracer.UnitTests
             Assert.AreEqual(new Vector(-1, 2, -1), tupleA.Cross(tupleB));
             Assert.AreEqual(new Vector(1, -2, 1), tupleB.Cross(tupleA));
         }
-        
+
+        [Test]
+        public void ReflectVectorApproachingAt45deg()
+        {
+            var vector = new Vector(1,-1,0);
+            var normal = new Vector(0,1,0);
+
+            var result = vector.Reflect(normal);
+            var expected = new Vector(1,1,0);
+            Assert.AreEqual(expected, result);
+        }
+
+        [Test]
+        public void ReflectVectorOffSlantedSurface()
+        {
+            var vector = new Vector(0, -1, 0);
+            var normal = new Vector(Math.Sqrt(2)/2, Math.Sqrt(2)/2, 0);
+
+            var result = Vector.Reflect(vector, normal);
+            var expected = new Vector(1, 0, 0);
+            Assert.AreEqual(expected, result);
+        }
+
     }
 }

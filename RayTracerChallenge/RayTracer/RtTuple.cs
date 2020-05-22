@@ -23,10 +23,7 @@ namespace RayTracer
         public double Z { get; private set; }
         public double W { get; private set; }
 
-        public bool IsPoint()
-        {
-            return DoubleUtils.DoubleEquals(W, PointW);
-        }
+
         public bool IsVector()
         {
             return DoubleUtils.DoubleEquals(W, VectorW);
@@ -63,10 +60,15 @@ namespace RayTracer
 
         public RtTuple Subtract(RtTuple subTuple)
         {
-            return new RtTuple(this.X - subTuple.X,
-                this.Y - subTuple.Y,
-                this.Z - subTuple.Z,
-                this.W - subTuple.W);
+            return Subtract(this,subTuple);
+        }
+
+        public static RtTuple Subtract(RtTuple a, RtTuple b)
+        {
+            return new RtTuple(a.X - b.X,
+                a.Y - b.Y,
+                a.Z - b.Z,
+                a.W - b.W);
         }
 
         public RtTuple Negate()
@@ -135,6 +137,10 @@ namespace RayTracer
 
         public static RtTuple operator +(RtTuple tuple) => tuple;
         public static RtTuple operator -(RtTuple tuple) => tuple.Negate();
+        public static RtTuple operator -(RtTuple a, RtTuple b) => a.Subtract(b);
+        public static RtTuple operator +(RtTuple a, RtTuple b) => a.Add(b);
+
+        public static RtTuple operator *(RtTuple tuple, double scalar) => tuple.Multiply(scalar);
 
         public Point ToPoint()
         {
