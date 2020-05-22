@@ -14,8 +14,13 @@ namespace RayTracer
             var wallZ = 10;
             var wallSize = 8;
             var halfWall = wallSize / 2;
-            var canvasPixels = 150;
+            var canvasPixels = 600;
             var shape = new Sphere();
+            shape.Material = new Material {Colour = new Colour(1, 0.3, 1)};
+
+            var lightPosition = new Point(-10,10,-10);
+            var lightColour = new Colour(0.8,1,1);
+            var light = new Light(lightPosition, lightColour);
 
             var pixelSize = (double)wallSize / canvasPixels;
 
@@ -37,10 +42,17 @@ namespace RayTracer
 
                     var xs = r.Intersects(shape);
 
-                    if (xs.Hit() != null)
+                    var hit = xs.Hit();
+                    if (hit != null)
                     {
-                        canvas.SetPixel(x,y,red);
+                        var point = r.Position(hit.T);
+                        var normal = hit.Object.NormalAt(point);
+                        var eye = (-r.Direction.Normalize()).ToVector();
+
+                        var colour = Light.Lighting(hit.Object.Material, light, point, eye, normal);
+                        canvas.SetPixel(x, y, colour);
                     }
+
                 }
             }
 

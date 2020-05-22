@@ -2,5 +2,7 @@
 {
     public interface ISceneObject
     {
+        Vector NormalAt(Point worldPoint);
+        public Material Material { get; }
     }
 }
