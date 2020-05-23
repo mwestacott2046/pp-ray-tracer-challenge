@@ -320,5 +320,23 @@ namespace RayTracer
 
             return shearing;
         }
+
+        public static Matrix ViewTransform(Point from, Point to, Vector up)
+        {
+            var forward = to.Subtract(from).Normalize().ToPoint();
+            var upN = up.Normalize();
+            var left = forward.Cross(upN);
+            var trueUp = left.Cross(forward);
+
+            var orientation = new Matrix(new double[,]
+            {
+                {left.X, left.Y, left.Z, 0},
+                {trueUp.X, trueUp.Y, trueUp.Z, 0},
+                {-forward.X, -forward.Y, -forward.Z, 0},
+                {0.0, 0.0, 0.0, 1.0}
+            });
+
+            return orientation.Multiply( Matrix.Translation(-from.X, -from.Y, -from.Z));
+        }
     }
 }
