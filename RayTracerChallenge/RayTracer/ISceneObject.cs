@@ -4,5 +4,7 @@
     {
         Vector NormalAt(Point worldPoint);
         public Material Material { get; }
+
+        public Matrix Transform { get; }
     }
 }

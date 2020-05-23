@@ -7,6 +7,7 @@ namespace RayTracer.UnitTests
 {
     public class RaySphereIntersectionsExampleTests
     {
+        [Ignore("this Is an Integration Test")]
         [Test]
         public void Test1()
         {

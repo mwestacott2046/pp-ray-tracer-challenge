@@ -21,5 +21,31 @@ namespace RayTracer
             var list = intersections.ToList();
             return list;
         }
+
+        public Computation PrepareComputations(Ray ray)
+        {
+            var comp = new Computation
+            {
+                T = this.T, 
+                Object = this.Object
+            };
+
+            comp.Point = ray.Position(comp.T);
+            comp.EyeV = (-ray.Direction).ToVector();
+            comp.NormalV = comp.Object.NormalAt(comp.Point);
+
+            if (comp.NormalV.Dot(comp.EyeV) < 0)
+            {
+                comp.Inside = true;
+                comp.NormalV = comp.NormalV.Negate().ToVector();
+            }
+            else
+            {
+                comp.Inside = false;
+            }
+
+
+            return comp;
+        }
     }
 }

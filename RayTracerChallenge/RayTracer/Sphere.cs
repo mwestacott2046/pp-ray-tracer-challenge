@@ -31,5 +31,25 @@ namespace RayTracer
                 .Normalize()
                 .ToVector();
         }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Radius, Origin.GetHashCode(), Transform.GetHashCode(), Material.GetHashCode());
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj != null)
+            {
+                if (obj is Sphere compareSphere)
+                {
+                    return DoubleUtils.DoubleEquals(this.Radius, compareSphere.Radius)
+                           && this.Origin.Equals(compareSphere.Origin)
+                           && this.Material.Equals(compareSphere.Material)
+                           && this.Transform.Equals(compareSphere.Transform);
+                }
+            }
+            return false;
+        }
     }
 }

@@ -16,6 +16,24 @@ namespace RayTracer
 
         public Point Position { get; private set; }
 
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Position.GetHashCode(), Intensity.GetHashCode());
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj != null)
+            {
+                if (obj is Light compareLight)
+                {
+                    return compareLight.Position.Equals(this.Position) && compareLight.Intensity.Equals(this.Intensity);
+                }
+            }
+
+            return false;
+        }
+
         public static Colour Lighting(Material material, Light light, Point point, Vector eyeV, Vector normalV)
         {
             var effectiveColour = material.Colour.Multiply(light.Intensity);

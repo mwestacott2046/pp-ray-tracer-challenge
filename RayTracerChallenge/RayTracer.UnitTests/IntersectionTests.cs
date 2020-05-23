@@ -93,5 +93,55 @@ namespace RayTracer.UnitTests
 
             Assert.AreEqual(i4, result);
         }
+
+        [Test]
+        public void PreComputingStateOfAnIntersection()
+        {
+            var r = new Ray(new Point(0,0,-5), new Vector(0,0,1));
+            var shape = new Sphere();
+            var i = new Intersection(4, shape);
+
+            var comps = i.PrepareComputations(r);
+
+            Assert.AreEqual(i.T,comps.T);
+            Assert.AreEqual(i.Object, comps.Object);
+            Assert.AreEqual(new Point(0, 0, -1),comps.Point);
+            Assert.AreEqual(new Vector(0,0,-1), comps.EyeV);
+            Assert.AreEqual(new Vector(0, 0, -1), comps.NormalV);
+
+        }
+        // The hit, when an intersection occurs on the outside
+        [Test]
+        public void PrepareComputation_WhenIntersectionIsOnOutside()
+        {
+            var r = new Ray(new Point(0, 0, -5), new Vector(0, 0, 1));
+            var shape = new Sphere();
+            var i = new Intersection(4, shape);
+
+            var comps = i.PrepareComputations(r);
+
+            Assert.IsFalse(comps.Inside);
+
+        }
+
+        // The hit, when an intersection occurs on the inside
+        [Test]
+        public void PrepareComputation_WhenIntersectionIsOnInside()
+        {
+            var r = new Ray(new Point(0, 0, 0), new Vector(0, 0, 1));
+            var shape = new Sphere();
+            var i = new Intersection(1, shape);
+
+            var comps = i.PrepareComputations(r);
+
+            Assert.IsTrue(comps.Inside);
+
+            Assert.AreEqual(new Point(0, 0, 1), comps.Point);
+            Assert.AreEqual(new Vector(0, 0, -1), comps.EyeV);
+            Assert.AreEqual(new Vector(0, 0, -1), comps.NormalV);
+
+        }
     }
+
+
 }
