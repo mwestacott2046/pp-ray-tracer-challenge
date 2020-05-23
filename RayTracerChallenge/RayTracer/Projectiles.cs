@@ -15,8 +15,8 @@ namespace RayTracer
 
         public RtTuple RunProjectiles()
         {
-            var proj = new Projectile(RtTuple.Point(0, 1, 0), (RtTuple.Vector(1, 1, 0).Normalize()));
-            var env = new Environment(RtTuple.Vector(0, -0.1, 0), RtTuple.Vector(-0.01, 0, 0));
+            var proj = new Projectile(new Point(0, 1, 0), (new Vector(1, 1, 0).Normalize()));
+            var env = new Environment(new Vector(0, -0.1, 0), new Vector(-0.01, 0, 0));
 
             while (proj.Position.Y >= 0.0)
             {

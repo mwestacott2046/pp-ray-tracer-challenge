@@ -18,24 +18,12 @@ namespace RayTracer
             W = w;
         }
 
-        public static Point Point(in double x, in double y, in double z)
-        {
-            return new Point(x, y, z);
-        }
-        public static Vector Vector(in double x, in double y, in double z)
-        {
-            return new Vector(x, y, z);
-        }
-
         public double X { get; private set; }
         public double Y { get; private set; }
         public double Z { get; private set; }
         public double W { get; private set; }
 
-        public bool IsPoint()
-        {
-            return DoubleUtils.DoubleEquals(W, PointW);
-        }
+
         public bool IsVector()
         {
             return DoubleUtils.DoubleEquals(W, VectorW);
@@ -72,10 +60,15 @@ namespace RayTracer
 
         public RtTuple Subtract(RtTuple subTuple)
         {
-            return new RtTuple(this.X - subTuple.X,
-                this.Y - subTuple.Y,
-                this.Z - subTuple.Z,
-                this.W - subTuple.W);
+            return Subtract(this,subTuple);
+        }
+
+        public static RtTuple Subtract(RtTuple a, RtTuple b)
+        {
+            return new RtTuple(a.X - b.X,
+                a.Y - b.Y,
+                a.Z - b.Z,
+                a.W - b.W);
         }
 
         public RtTuple Negate()
@@ -131,9 +124,9 @@ namespace RayTracer
 
         public RtTuple Cross(RtTuple other)
         {
-            return Vector(Y * other.Z - Z * other.Y,
-                            Z * other.X - X * other.Z,
-                            X * other.Y - Y * other.X);
+            return new Vector(Y * other.Z - Z * other.Y,
+                                Z * other.X - X * other.Z,
+                                X * other.Y - Y * other.X);
         }
 
         public double[] AsArray()
@@ -144,19 +137,19 @@ namespace RayTracer
 
         public static RtTuple operator +(RtTuple tuple) => tuple;
         public static RtTuple operator -(RtTuple tuple) => tuple.Negate();
-    }
+        public static RtTuple operator -(RtTuple a, RtTuple b) => a.Subtract(b);
+        public static RtTuple operator +(RtTuple a, RtTuple b) => a.Add(b);
 
-    public class Vector : RtTuple
-    {
-        public Vector(double x, double y, double z) : base(x, y, z, 0.0)
+        public static RtTuple operator *(RtTuple tuple, double scalar) => tuple.Multiply(scalar);
+
+        public Point ToPoint()
         {
+            return new Point(this.X,this.Y, this.Z);
         }
-    }
 
-    public class Point : RtTuple
-    {
-        public Point(double x, double y, double z) : base(x, y, z, 1.0)
+        public Vector ToVector()
         {
+            return new Vector(this.X, this.Y, this.Z);
         }
     }
 }

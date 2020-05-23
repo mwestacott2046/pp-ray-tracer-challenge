@@ -382,10 +382,10 @@ namespace RayTracer.UnitTests
         public void MultiplyByTranslationMatrix()
         {
             var translation = Matrix.Translation(5, -3, 2);
-            var point = RtTuple.Point(-3, 4, 5);
+            var point = new Point(-3, 4, 5);
             var result = translation * point;
             
-            var expectedResult = RtTuple.Point(2, 1, 7);
+            var expectedResult = new Point(2, 1, 7);
             Assert.AreEqual(expectedResult, result);
         }
 
@@ -395,10 +395,10 @@ namespace RayTracer.UnitTests
         {
             var translation = Matrix.Translation(5, -3, 2);
             var inv = translation.Inverse();
-            var point = RtTuple.Point(-3, 4, 5);
+            var point = new Point(-3, 4, 5);
             var result = inv * point;
 
-            var expectedResult = RtTuple.Point(-8, 7, 3);
+            var expectedResult = new Point(-8, 7, 3);
             Assert.AreEqual(expectedResult, result);
         }
 
@@ -406,7 +406,7 @@ namespace RayTracer.UnitTests
         public void TranslationDoesNotAffectVectors()
         {
             var translation = Matrix.Translation(5, -3, 2);
-            var vector = RtTuple.Vector(-3, 4, 5);
+            var vector = new Vector(-3, 4, 5);
             var result = translation * vector;
 
             Assert.AreEqual(vector, result);
@@ -416,10 +416,10 @@ namespace RayTracer.UnitTests
         public void ScalingMatrixMultiplyByPoint()
         {
             var scaling = Matrix.Scaling(2, 3, 4);
-            var point = RtTuple.Point(-4, 6, 8);
+            var point = new Point(-4, 6, 8);
             var result = scaling * point;
 
-            var expectedResult = RtTuple.Point(-8, 18, 32);
+            var expectedResult = new Point(-8, 18, 32);
             Assert.AreEqual(expectedResult, result);
         }
 
@@ -427,10 +427,10 @@ namespace RayTracer.UnitTests
         public void ScalingMatrixMultiplyByVector()
         {
             var scaling = Matrix.Scaling(2, 3, 4);
-            var vector = RtTuple.Vector(-4, 6, 8);
+            var vector = new Vector(-4, 6, 8);
             var result = scaling * vector;
 
-            var expectedResult = RtTuple.Vector(-8, 18, 32);
+            var expectedResult = new Vector(-8, 18, 32);
             Assert.AreEqual(expectedResult, result);
         }
 
@@ -439,20 +439,20 @@ namespace RayTracer.UnitTests
         {
             var scaling = Matrix.Scaling(2, 3, 4);
             var inv = scaling.Inverse();
-            var vector = RtTuple.Vector(-4, 6, 8);
+            var vector = new Vector(-4, 6, 8);
             var result = inv * vector;
 
-            var expectedResult = RtTuple.Vector(-2, 2, 2);
+            var expectedResult = new Vector(-2, 2, 2);
             Assert.AreEqual(expectedResult, result);
         }
         [Test]
         public void ReflectionIsScalingByNegativeValue()
         {
             var scaling = Matrix.Scaling(-1, 1, 1);
-            var point = RtTuple.Point(2, 3, 4);
+            var point = new Point(2, 3, 4);
             var result = scaling * point;
 
-            var expectedResult = RtTuple.Point(-2, 3, 4);
+            var expectedResult = new Point(-2, 3, 4);
             Assert.AreEqual(expectedResult, result);
         }
 
@@ -460,123 +460,123 @@ namespace RayTracer.UnitTests
         [Test]
         public void RotatingPointAroundXAxis()
         {
-            var point = RtTuple.Point(0, 1, 0);
+            var point = new Point(0, 1, 0);
             var halfQuarter = Matrix.RotationX(Math.PI / 4);
             var fullQuarter = Matrix.RotationX(Math.PI / 2);
             
             var halfResult = halfQuarter * point;
-            Assert.AreEqual(RtTuple.Point(0, Math.Sqrt(2)/2, Math.Sqrt(2) / 2), halfResult);
+            Assert.AreEqual(new Point(0, Math.Sqrt(2)/2, Math.Sqrt(2) / 2), halfResult);
 
             var fullResult = fullQuarter * point;
-            Assert.AreEqual(RtTuple.Point(0, 0, 1), fullResult);
+            Assert.AreEqual(new Point(0, 0, 1), fullResult);
 
         }
 
         [Test]
         public void RotatingPointAroundYAxis()
         {
-            var point = RtTuple.Point(0, 0, 1);
+            var point = new Point(0, 0, 1);
             var halfQuarter = Matrix.RotationY(Math.PI / 4);
             var fullQuarter = Matrix.RotationY(Math.PI / 2);
 
             var halfResult = halfQuarter * point;
-            Assert.AreEqual(RtTuple.Point( Math.Sqrt(2) / 2, 0, Math.Sqrt(2) / 2), halfResult);
+            Assert.AreEqual(new Point( Math.Sqrt(2) / 2, 0, Math.Sqrt(2) / 2), halfResult);
 
             var fullResult = fullQuarter * point;
-            Assert.AreEqual(RtTuple.Point(1, 0, 0), fullResult);
+            Assert.AreEqual(new Point(1, 0, 0), fullResult);
         }
 
         [Test]
         public void RotatingPointAroundZAxis()
         {
-            var point = RtTuple.Point(0, 1, 0);
+            var point = new Point(0, 1, 0);
             var halfQuarter = Matrix.RotationZ(Math.PI / 4);
             var fullQuarter = Matrix.RotationZ(Math.PI / 2);
 
             var halfResult = halfQuarter * point;
-            Assert.AreEqual(RtTuple.Point(-(Math.Sqrt(2) / 2), Math.Sqrt(2) / 2, 0), halfResult);
+            Assert.AreEqual(new Point(-(Math.Sqrt(2) / 2), Math.Sqrt(2) / 2, 0), halfResult);
 
             var fullResult = fullQuarter * point;
-            Assert.AreEqual(RtTuple.Point(-1, 0, 0), fullResult);
+            Assert.AreEqual(new Point(-1, 0, 0), fullResult);
         }
 
         [Test]
         public void ShearingTransformMoveXInProportionToY()
         {
             var shearing = Matrix.Shearing(1,0,0,0,0,0);
-            var point = RtTuple.Point(2, 3, 4);
+            var point = new Point(2, 3, 4);
             var result = shearing * point;
-            Assert.AreEqual(RtTuple.Point(5,3,4),result);
+            Assert.AreEqual(new Point(5,3,4),result);
         }
 
         [Test]
         public void ShearingTransformMoveXInProportionToZ()
         {
             var shearing = Matrix.Shearing(0, 1, 0, 0, 0, 0);
-            var point = RtTuple.Point(2, 3, 4);
+            var point = new Point(2, 3, 4);
             var result = shearing * point;
-            Assert.AreEqual(RtTuple.Point(6, 3, 4), result);
+            Assert.AreEqual(new Point(6, 3, 4), result);
         }
 
         [Test]
         public void ShearingTransformMoveYInProportionToX()
         {
             var shearing = Matrix.Shearing(0, 0, 1, 0, 0, 0);
-            var point = RtTuple.Point(2, 3, 4);
+            var point = new Point(2, 3, 4);
             var result = shearing * point;
-            Assert.AreEqual(RtTuple.Point(2, 5, 4), result);
+            Assert.AreEqual(new Point(2, 5, 4), result);
         }
 
         [Test]
         public void ShearingTransformMoveYInProportionToZ()
         {
             var shearing = Matrix.Shearing(0, 0, 0, 1, 0, 0);
-            var point = RtTuple.Point(2, 3, 4);
+            var point = new Point(2, 3, 4);
             var result = shearing * point;
-            Assert.AreEqual(RtTuple.Point(2, 7, 4), result);
+            Assert.AreEqual(new Point(2, 7, 4), result);
         }
 
         [Test]
         public void ShearingTransformMoveZInProportionToX()
         {
             var shearing = Matrix.Shearing(0, 0, 0, 0, 1, 0);
-            var point = RtTuple.Point(2, 3, 4);
+            var point = new Point(2, 3, 4);
             var result = shearing * point;
-            Assert.AreEqual(RtTuple.Point(2, 3, 6), result);
+            Assert.AreEqual(new Point(2, 3, 6), result);
         }
 
         [Test]
         public void ShearingTransformMoveZInProportionToY()
         {
             var shearing = Matrix.Shearing(0, 0, 0, 0, 0, 1);
-            var point = RtTuple.Point(2, 3, 4);
+            var point = new Point(2, 3, 4);
             var result = shearing * point;
-            Assert.AreEqual(RtTuple.Point(2, 3, 7), result);
+            Assert.AreEqual(new Point(2, 3, 7), result);
         }
 
         [Test]
         public void IndividualTransformationsAppliedInSequence()
         {
-            var p = RtTuple.Point(1, 0, 1);
+            var p = new Point(1, 0, 1);
 
             var a = Matrix.RotationX(Math.PI / 2);
             var b = Matrix.Scaling(5, 5, 5);
             var c = Matrix.Translation(10, 5, 7);
 
             var p2 = a * p;
-            Assert.AreEqual(RtTuple.Point(1,-1,0), p2);
+            Assert.AreEqual(new Point(1,-1,0), p2);
 
             var p3 = b * p2;
-            Assert.AreEqual(RtTuple.Point(5, -5, 0), p3);
+            Assert.AreEqual(new Point(5, -5, 0), p3);
 
             var p4 = c * p3;
-            Assert.AreEqual(RtTuple.Point(15, 0, 7), p4);
+            Assert.AreEqual(new Point(15, 0, 7), p4);
         }
 
         [Test]
         public void ChainedTransformationsMustBeAppliedReverse()
         {
-            var p = RtTuple.Point(1, 0, 1);
+            var p = new Point(1, 0, 1);
 
             var a = Matrix.RotationX(Math.PI / 2);
             var b = Matrix.Scaling(5, 5, 5);
@@ -584,7 +584,7 @@ namespace RayTracer.UnitTests
 
             var t = c * b * a;
             var result = t * p;
-            Assert.AreEqual(RtTuple.Point(15, 0, 7), result);
+            Assert.AreEqual(new Point(15, 0, 7), result);
         }
     }
 }
