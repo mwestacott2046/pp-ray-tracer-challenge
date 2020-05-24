@@ -157,6 +157,32 @@ namespace RayTracer.UnitTests
             Assert.IsFalse(world.IsShadowed(point));
         }
 
+        [Test]
+        public void ShadeHit()
+        {
+            var world = new World
+            {
+                LightSource = new Light(new Point(0, 0, -10), new Colour(1, 1, 1))
+            };
+
+            var sphere1 = new Sphere();
+            world.SceneObjects.Add(sphere1);
+
+            var sphere2 = new Sphere();
+            world.SceneObjects.Add(sphere2);
+            sphere2.Transform = Matrix.Translation(0,0,10);
+
+            var ray = new Ray(new Point(0,0,5), new Vector(0,0,1));
+
+            var i = new Intersection(4, sphere2);
+
+            var comps = i.PrepareComputations(ray);
+
+            var result = world.ShadeHit(comps);
+
+            Assert.AreEqual(new Colour(0.1,0.1,0.1), result);
+
+        }
 
     }
 }

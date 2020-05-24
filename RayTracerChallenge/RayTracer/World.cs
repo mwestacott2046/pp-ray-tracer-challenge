@@ -68,11 +68,15 @@ namespace RayTracer
 
         public Colour ShadeHit(Computation comp)
         {
+
+            var shadowed = IsShadowed(comp.OverPoint);
+
             return Light.Lighting(comp.Object.Material, 
                 this.LightSource, 
                 comp.Point, 
                 comp.EyeV, 
-                comp.NormalV);
+                comp.NormalV,
+                shadowed);
         }
 
         public Colour ColourAt(Ray ray)

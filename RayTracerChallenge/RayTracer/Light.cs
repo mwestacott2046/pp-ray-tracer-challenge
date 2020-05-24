@@ -34,7 +34,7 @@ namespace RayTracer
             return false;
         }
 
-        public static Colour Lighting(Material material, Light light, Point point, Vector eyeV, Vector normalV, bool inShadow = false)
+        public static Colour Lighting(Material material, Light light, Point point, Vector eyeV, Vector normalV, bool inShadow)
         {
             var effectiveColour = material.Colour.Multiply(light.Intensity);
 

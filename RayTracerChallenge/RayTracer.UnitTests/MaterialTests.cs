@@ -31,7 +31,7 @@ namespace RayTracer.UnitTests
             var normalV = new Vector(0, 0, -1);
             var light = new Light(new Point(0, 0, -10), new Colour(1, 1, 1));
 
-            var result = Light.Lighting(m, light, position, eyeV, normalV);
+            var result = Light.Lighting(m, light, position, eyeV, normalV, false);
 
             Assert.AreEqual(new Colour(1.9, 1.9, 1.9), result);
         }
@@ -47,7 +47,7 @@ namespace RayTracer.UnitTests
             var normalV = new Vector(0, 0, -1);
             var light = new Light(new Point(0, 0, -10), new Colour(1, 1, 1));
 
-            var result = Light.Lighting(m, light, position, eyeV, normalV);
+            var result = Light.Lighting(m, light, position, eyeV, normalV, false);
 
             Assert.AreEqual(new Colour(1.0, 1.0, 1.0), result);
         }
@@ -63,7 +63,7 @@ namespace RayTracer.UnitTests
             var normalV = new Vector(0, 0, -1);
             var light = new Light(new Point(0, 10, -10), new Colour(1, 1, 1));
 
-            var result = Light.Lighting(m, light, position, eyeV, normalV);
+            var result = Light.Lighting(m, light, position, eyeV, normalV, false);
 
             Assert.AreEqual(new Colour(0.7364, 0.7364, 0.7364), result);
         }
@@ -80,7 +80,7 @@ namespace RayTracer.UnitTests
             var normalV = new Vector(0, 0, -1);
             var light = new Light(new Point(0, 10, -10), new Colour(1, 1, 1));
 
-            var result = Light.Lighting(m, light, position, eyeV, normalV);
+            var result = Light.Lighting(m, light, position, eyeV, normalV, false);
 
             Assert.AreEqual(new Colour(1.6364, 1.6364, 1.6364), result);
         }
@@ -96,7 +96,7 @@ namespace RayTracer.UnitTests
             var normalV = new Vector(0, 0, -1);
             var light = new Light(new Point(0, 0, 10), new Colour(1, 1, 1));
 
-            var result = Light.Lighting(m, light, position,eyeV, normalV);
+            var result = Light.Lighting(m, light, position,eyeV, normalV,false);
 
             Assert.AreEqual(new Colour(0.1,0.1,0.1), result);
         }
