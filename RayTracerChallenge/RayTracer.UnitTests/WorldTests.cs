@@ -120,5 +120,43 @@ namespace RayTracer.UnitTests
             var result = w.ColourAt(r);
             Assert.AreEqual(inner.Material.Colour, result);
         }
+
+        [Test]
+        public void IsShadowed_WhenNothingCoLinearWithPointToLight_False()
+        {
+            var world = World.DefaultWorld;
+            var point = new Point(0,10,0);
+
+            Assert.IsFalse(world.IsShadowed(point));
+        }
+
+        [Test]
+        public void IsShadowed_WhenObjectBetweenPointAndLight_True()
+        {
+            var world = World.DefaultWorld;
+            var point = new Point(10, -10, 10);
+
+            Assert.IsTrue(world.IsShadowed(point));
+        }
+
+        [Test]
+        public void IsShadowed_WhenPointBehindLight_False()
+        {
+            var world = World.DefaultWorld;
+            var point = new Point(-20, 20, -20);
+
+            Assert.IsFalse(world.IsShadowed(point));
+        }
+
+        [Test]
+        public void IsShadowed_WhenPointBetweenLightAndObject_False()
+        {
+            var world = World.DefaultWorld;
+            var point = new Point(-2, -2, 2);
+
+            Assert.IsFalse(world.IsShadowed(point));
+        }
+
+
     }
 }

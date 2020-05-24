@@ -89,5 +89,21 @@ namespace RayTracer
 
             return Colour.Black;
         }
+
+        public bool IsShadowed(Point point)
+        {
+
+            var v = LightSource.Position - point;
+            var distance = v.Magnitude();
+            var direction = v.Normalize();
+
+            var ray = new Ray(point, direction.ToVector());
+
+            var intersections = Intersects(ray);
+
+            var hit = intersections.Hit();
+
+            return hit != null && hit.T < distance;
+        }
     }
 }
