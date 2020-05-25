@@ -8,5 +8,6 @@
         public Vector NormalV { get; set; }
         public ISceneObject Object { get; set; }
         public bool Inside { get; set; }
+        public Point OverPoint { get; set; }
     }
 }

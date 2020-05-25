@@ -49,7 +49,7 @@ namespace RayTracer
                         var normal = hit.Object.NormalAt(point);
                         var eye = (-r.Direction.Normalize()).ToVector();
 
-                        var colour = Light.Lighting(hit.Object.Material, light, point, eye, normal);
+                        var colour = Light.Lighting(hit.Object.Material, light, point, eye, normal,false);
                         canvas.SetPixel(x, y, colour);
                     }
 

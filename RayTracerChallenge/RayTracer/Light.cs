@@ -34,7 +34,7 @@ namespace RayTracer
             return false;
         }
 
-        public static Colour Lighting(Material material, Light light, Point point, Vector eyeV, Vector normalV)
+        public static Colour Lighting(Material material, Light light, Point point, Vector eyeV, Vector normalV, bool inShadow)
         {
             var effectiveColour = material.Colour.Multiply(light.Intensity);
 
@@ -80,8 +80,7 @@ namespace RayTracer
 
             }
 
-            return ambient.Add(diffuse).Add(specular);
-
+            return inShadow ? ambient : ambient.Add(diffuse).Add(specular);
         }
     }
 }

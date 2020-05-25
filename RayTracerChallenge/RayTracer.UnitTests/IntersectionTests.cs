@@ -141,6 +141,24 @@ namespace RayTracer.UnitTests
             Assert.AreEqual(new Vector(0, 0, -1), comps.NormalV);
 
         }
+
+
+        [Test]
+        public void TheHitShouldOffsetThePoint()
+        {
+            var ray = new Ray(new Point(0,0,-5), new Vector(0,0,1));
+
+            var shape = new Sphere();
+            shape.Transform = Matrix.Translation(0,0,1);
+
+            var i = new Intersection(5, shape);
+
+            var comps = i.PrepareComputations(ray);
+
+            Assert.IsTrue(comps.OverPoint.Z < -DoubleUtils.Epsilon / 2);
+            Assert.IsTrue(comps.Point.Z > comps.OverPoint.Z);
+
+        }
     }
 
 

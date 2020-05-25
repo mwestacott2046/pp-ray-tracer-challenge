@@ -68,11 +68,15 @@ namespace RayTracer
 
         public Colour ShadeHit(Computation comp)
         {
+
+            var shadowed = IsShadowed(comp.OverPoint);
+
             return Light.Lighting(comp.Object.Material, 
                 this.LightSource, 
                 comp.Point, 
                 comp.EyeV, 
-                comp.NormalV);
+                comp.NormalV,
+                shadowed);
         }
 
         public Colour ColourAt(Ray ray)
@@ -88,6 +92,22 @@ namespace RayTracer
             }
 
             return Colour.Black;
+        }
+
+        public bool IsShadowed(Point point)
+        {
+
+            var v = LightSource.Position - point;
+            var distance = v.Magnitude();
+            var direction = v.Normalize();
+
+            var ray = new Ray(point, direction.ToVector());
+
+            var intersections = Intersects(ray);
+
+            var hit = intersections.Hit();
+
+            return hit != null && hit.T < distance;
         }
     }
 }
