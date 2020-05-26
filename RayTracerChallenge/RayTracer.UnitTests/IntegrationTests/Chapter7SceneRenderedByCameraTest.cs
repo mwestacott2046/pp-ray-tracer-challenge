@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using NUnit.Framework;
+using RayTracer.Shapes;
 
-namespace RayTracer.UnitTests
+namespace RayTracer.UnitTests.IntegrationTests
 {
     [TestFixture]
     public class Chapter7SceneRenderedByCameraTest

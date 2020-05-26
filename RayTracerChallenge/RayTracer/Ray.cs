@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using RayTracer.Shapes;
 
 namespace RayTracer
 {
@@ -20,27 +21,6 @@ namespace RayTracer
             return Origin.Add(Direction.Multiply(t)).ToPoint();
         }
 
-
-        public Intersection[] Intersects(ISceneObject sphere)
-        {
-            var ray = this.Transform(sphere.Transform.Inverse());
-            var sphereToRay = ray.Origin.Subtract(Point.Zero());
-
-            var a = ray.Direction.Dot(ray.Direction);
-            var b = 2 * ray.Direction.Dot(sphereToRay);
-            var c = sphereToRay.Dot(sphereToRay) - 1;
-
-            var discriminant = (b * b) - 4 * a * c;
-            if (discriminant < 0)
-            {
-                return new Intersection[] { };
-            }
-
-            var t1 = (-b - Math.Sqrt(discriminant)) / (2 * a);
-            var t2 = (-b + Math.Sqrt(discriminant)) / (2 * a);
-
-            return new[] { new Intersection(t1, sphere), new Intersection(t2, sphere) };
-        }
 
         public Ray Transform(Matrix transformMatrix)
         {

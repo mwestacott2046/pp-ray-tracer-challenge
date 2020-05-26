@@ -1,4 +1,6 @@
-﻿namespace RayTracer
+﻿using System.Collections.Generic;
+
+namespace RayTracer.Shapes
 {
     public interface ISceneObject
     {
@@ -6,5 +8,6 @@
         public Material Material { get; }
 
         public Matrix Transform { get; }
+        Intersection[] Intersects(Ray ray);
     }
 }

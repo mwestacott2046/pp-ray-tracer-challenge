@@ -1,4 +1,4 @@
-﻿namespace RayTracer
+﻿namespace RayTracer.ProjectileExperiments
 {
     public class Projectile
     {

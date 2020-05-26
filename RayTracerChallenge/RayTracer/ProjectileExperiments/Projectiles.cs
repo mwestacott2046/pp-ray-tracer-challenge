@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace RayTracer
+﻿namespace RayTracer.ProjectileExperiments
 {
     public class Projectiles
     {
