@@ -6,9 +6,6 @@ namespace RayTracer
 {
     public class RtTuple
     {
-        private const double VectorW = 0.0;
-        private const double PointW = 1.0;
-        
 
         public RtTuple(double x, double y, double z, double w)
         {
@@ -23,11 +20,6 @@ namespace RayTracer
         public double Z { get; private set; }
         public double W { get; private set; }
 
-
-        public bool IsVector()
-        {
-            return DoubleUtils.DoubleEquals(W, VectorW);
-        }
 
         public override bool Equals(object obj)
         {
