@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
-namespace RayTracer
+namespace RayTracer.ProjectileExperiments
 {
     public class ProjectilesOnCanvas
     {

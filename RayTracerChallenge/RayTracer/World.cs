@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Text;
+using RayTracer.Shapes;
 
 namespace RayTracer
 {
@@ -45,7 +46,7 @@ namespace RayTracer
             var allIntersections = new List<Intersection>();
             foreach (var sceneObject in SceneObjects)
             {
-                allIntersections.AddRange( ray.Intersects(sceneObject));
+                allIntersections.AddRange( sceneObject.Intersects(ray));
             }
 
             allIntersections.Sort((x, y) =>

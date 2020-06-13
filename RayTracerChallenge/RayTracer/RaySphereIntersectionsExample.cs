@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using RayTracer.Shapes;
 
 namespace RayTracer
 {
@@ -40,7 +41,7 @@ namespace RayTracer
 
                     var r = new Ray(rayOrigin, position.Subtract(rayOrigin).ToVector());
 
-                    var xs = r.Intersects(shape);
+                    var xs = shape.Intersects(r);
 
                     var hit = xs.Hit();
                     if (hit != null)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
+using RayTracer.Shapes;
 
 namespace RayTracer.UnitTests
 {
@@ -33,7 +34,7 @@ namespace RayTracer.UnitTests
             var r = new Ray(new Point(0,0,-5), new Vector(0,0,1));
             var s = new Sphere();
             s.Transform = Matrix.Scaling(2, 2, 2);
-            var xs = r.Intersects(s);
+            var xs = s.Intersects(r);
             Assert.AreEqual(2, xs.Length);
             Assert.AreEqual(3, xs[0].T);
             Assert.AreEqual(7, xs[1].T);
@@ -45,7 +46,7 @@ namespace RayTracer.UnitTests
             var r = new Ray(new Point(0, 0, -5), new Vector(0, 0, 1));
             var s = new Sphere();
             s.Transform = Matrix.Translation(5, 0, 0);
-            var xs = r.Intersects(s);
+            var xs = s.Intersects(r);
             Assert.AreEqual(0, xs.Length);
         }
 
@@ -166,6 +167,88 @@ namespace RayTracer.UnitTests
             sphere.Material = material;
             
             Assert.AreEqual(material, sphere.Material);
+        }
+
+        [Test]
+        public void RayIntersectsSphereAtTwoPoints()
+        {
+            var ray = new Ray(new Point(0, 0, -5), new Vector(0, 0, 1));
+
+            var sphere = new Sphere();
+
+            var xs = sphere.Intersects(ray);
+
+            Assert.AreEqual(2, xs.Length);
+            Assert.AreEqual(4.0, xs[0].T);
+            Assert.AreEqual(6.0, xs[1].T);
+        }
+
+        [Test]
+        public void RayIntersectsSphereAtTangent()
+        {
+            var ray = new Ray(new Point(0, 1, -5), new Vector(0, 0, 1));
+
+            var sphere = new Sphere();
+
+            var xs = sphere.Intersects(ray);
+
+            Assert.AreEqual(2, xs.Length);
+            Assert.AreEqual(5.0, xs[0].T);
+            Assert.AreEqual(5.0, xs[1].T);
+        }
+
+        [Test]
+        public void RayMissesSphere()
+        {
+            var ray = new Ray(new Point(0, 2, -5), new Vector(0, 0, 1));
+
+            var sphere = new Sphere();
+
+            var xs = sphere.Intersects(ray);
+
+            Assert.AreEqual(0, xs.Length);
+        }
+
+        [Test]
+        public void RayOriginatesInsideSphere()
+        {
+            var ray = new Ray(new Point(0, 0, 0), new Vector(0, 0, 1));
+
+            var sphere = new Sphere();
+
+            var xs = sphere.Intersects(ray);
+
+            Assert.AreEqual(2, xs.Length);
+            Assert.AreEqual(-1.0, xs[0].T);
+            Assert.AreEqual(1.0, xs[1].T);
+        }
+
+        [Test]
+        public void SphereIsBehindARay()
+        {
+            var ray = new Ray(new Point(0, 0, 5), new Vector(0, 0, 1));
+
+            var sphere = new Sphere();
+
+            var xs = sphere.Intersects(ray);
+
+            Assert.AreEqual(2, xs.Length);
+            Assert.AreEqual(-6.0, xs[0].T);
+            Assert.AreEqual(-4.0, xs[1].T);
+        }
+
+        [Test]
+        public void IntersectSetsObjectOnIntersection()
+        {
+            var ray = new Ray(new Point(0, 0, 5), new Vector(0, 0, 1));
+
+            var sphere = new Sphere();
+
+            var xs = sphere.Intersects(ray);
+
+            Assert.AreEqual(2, xs.Length);
+            Assert.AreEqual(sphere, xs[0].Object);
+            Assert.AreEqual(sphere, xs[1].Object);
         }
 
 

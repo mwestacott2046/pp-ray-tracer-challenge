@@ -1,35 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace RayTracer
+namespace RayTracer.Shapes
 {
-    public class Sphere :ISceneObject
+    public class Sphere : AbstractShape
     {
-        public Sphere()
+        public Sphere(): base()
         {
             Origin = new Point(0,0,0);
             Radius = 1.0;
-            Transform = Matrix.IdentityMatrix;
-            Material = new Material();
         }
 
         public Point Origin { get; private set; }
         public double Radius { get; private set; }
-        public Matrix Transform { get; set; }
-        public Material Material { get; set; }
 
-        public Vector NormalAt(Point worldPoint)
+        protected override Vector LocalNormalAt(Point localPoint)
         {
-            var inverse = Transform.Inverse();
-            var objectPoint = inverse.Multiply(worldPoint);
-
-            var objectNormal = objectPoint.Subtract(Point.Zero());
-            var worldNormal = (inverse.Transpose()).Multiply(objectNormal.ToVector()).ToVector();
-            
-            return worldNormal
-                .Normalize()
-                .ToVector();
+            return localPoint.Subtract(Point.Zero()).ToVector();
         }
 
         public override int GetHashCode()
@@ -51,5 +37,28 @@ namespace RayTracer
             }
             return false;
         }
+
+
+        protected override Intersection[] LocalIntersects(Ray localRay)
+        {
+            var sphereToRay = localRay.Origin.Subtract(Point.Zero());
+
+            var a = localRay.Direction.Dot(localRay.Direction);
+            var b = 2 * localRay.Direction.Dot(sphereToRay);
+            var c = sphereToRay.Dot(sphereToRay) - 1;
+
+            var discriminant = (b * b) - 4 * a * c;
+            if (discriminant < 0)
+            {
+                return new Intersection[] { };
+            }
+
+            var t1 = (-b - Math.Sqrt(discriminant)) / (2 * a);
+            var t2 = (-b + Math.Sqrt(discriminant)) / (2 * a);
+
+            return new[] { new Intersection(t1, this), new Intersection(t2, this) };
+
+        }
+        
     }
 }

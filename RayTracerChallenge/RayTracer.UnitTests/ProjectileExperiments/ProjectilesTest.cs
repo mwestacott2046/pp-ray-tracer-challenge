@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using NUnit.Framework;
+using RayTracer.ProjectileExperiments;
 
-namespace RayTracer.UnitTests
+namespace RayTracer.UnitTests.ProjectileExperiments
 {
     [TestFixture]
     public class ProjectilesTest

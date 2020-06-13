@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.WebSockets;
 using System.Text;
 using NUnit.Framework;
+using RayTracer.Shapes;
 
 namespace RayTracer.UnitTests
 {

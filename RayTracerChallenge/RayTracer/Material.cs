@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace RayTracer
 {
@@ -25,8 +23,7 @@ namespace RayTracer
         {
             if (obj != null)
             {
-                var objMaterial = obj as Material;
-                if (objMaterial != null)
+                if (obj is Material objMaterial)
                 {
                     return this.Colour.Equals(objMaterial.Colour) &&
                            DoubleUtils.DoubleEquals(this.Ambient, objMaterial.Ambient) &&

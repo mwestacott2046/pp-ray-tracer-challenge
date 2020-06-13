@@ -1,4 +1,6 @@
-﻿namespace RayTracer
+﻿using RayTracer.Shapes;
+
+namespace RayTracer
 {
     public class Computation
     {
