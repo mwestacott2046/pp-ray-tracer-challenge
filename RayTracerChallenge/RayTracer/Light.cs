@@ -41,7 +41,7 @@ namespace RayTracer
             Colour materialColour;
             if (material.Pattern != null)
             {
-                materialColour = material.Pattern.StripeAtObject(sceneObject, point);
+                materialColour = material.Pattern.PatternAtShape(sceneObject, point);
             }
             else
             {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
+using RayTracer.Patterns;
 using RayTracer.Shapes;
 
 namespace RayTracer.UnitTests
@@ -135,7 +136,7 @@ namespace RayTracer.UnitTests
             var sceneObject = new Sphere();
 
             var m = new Material();
-            m.Pattern = new Pattern(Colour.White, Colour.Black);
+            m.Pattern = new StripePattern(Colour.White, Colour.Black);
             m.Ambient = 1;
             m.Diffuse = 0;
             m.Specular = 0;

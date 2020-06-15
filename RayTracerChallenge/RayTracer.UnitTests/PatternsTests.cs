@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
+using RayTracer.Patterns;
 using RayTracer.Shapes;
 
 namespace RayTracer.UnitTests
@@ -12,7 +13,7 @@ namespace RayTracer.UnitTests
         [Test]
         public void CreatingStripePattern()
         {
-            var pattern = new Pattern(Colour.Black, Colour.White);
+            var pattern = new StripePattern(Colour.Black, Colour.White);
 
             Assert.AreEqual(Colour.Black, pattern.A);
             Assert.AreEqual(Colour.White, pattern.B);
@@ -21,37 +22,37 @@ namespace RayTracer.UnitTests
         [Test]
         public void StripPatternIsConstantY()
         {
-            var pattern = new Pattern(Colour.White, Colour.Black);
+            var pattern = new StripePattern(Colour.White, Colour.Black);
 
-            Assert.AreEqual(Colour.White, pattern.StripeAt(new Point(0, 0, 0)));
-            Assert.AreEqual(Colour.White, pattern.StripeAt(new Point(0, 1, 0)));
-            Assert.AreEqual(Colour.White, pattern.StripeAt(new Point(0, 2, 0)));
+            Assert.AreEqual(Colour.White, pattern.PatternAt(new Point(0, 0, 0)));
+            Assert.AreEqual(Colour.White, pattern.PatternAt(new Point(0, 1, 0)));
+            Assert.AreEqual(Colour.White, pattern.PatternAt(new Point(0, 2, 0)));
         }
 
         [Test]
         public void StripPatternIsConstantZ()
         {
-            var pattern = new Pattern(Colour.White, Colour.Black);
+            var pattern = new StripePattern(Colour.White, Colour.Black);
 
-            Assert.AreEqual(Colour.White, pattern.StripeAt(new Point(0, 0, 0)));
-            Assert.AreEqual(Colour.White, pattern.StripeAt(new Point(0, 0, 1)));
-            Assert.AreEqual(Colour.White, pattern.StripeAt(new Point(0, 0, 2)));
+            Assert.AreEqual(Colour.White, pattern.PatternAt(new Point(0, 0, 0)));
+            Assert.AreEqual(Colour.White, pattern.PatternAt(new Point(0, 0, 1)));
+            Assert.AreEqual(Colour.White, pattern.PatternAt(new Point(0, 0, 2)));
         }
 
         [Test]
         public void StripPatternAlternatesInX()
         {
-            var pattern = new Pattern(Colour.White, Colour.Black);
+            var pattern = new StripePattern(Colour.White, Colour.Black);
 
-            Assert.AreEqual(Colour.White, pattern.StripeAt(new Point(0, 0, 0)));
-            Assert.AreEqual(Colour.White, pattern.StripeAt(new Point(0.9, 0, 0)));
-            Assert.AreEqual(Colour.Black, pattern.StripeAt(new Point(1, 0, 0)));
-            Assert.AreEqual(Colour.White, pattern.StripeAt(new Point(2, 0, 0)));
-            Assert.AreEqual(Colour.Black, pattern.StripeAt(new Point(3, 0, 0)));
-            Assert.AreEqual(Colour.Black, pattern.StripeAt(new Point(-0.1, 0, 0)));
-            Assert.AreEqual(Colour.White, pattern.StripeAt(new Point(-1, 0, 0)));
-            Assert.AreEqual(Colour.White, pattern.StripeAt(new Point(-1.1, 0, 0)));
-            Assert.AreEqual(Colour.Black, pattern.StripeAt(new Point(-2, 0, 0)));
+            Assert.AreEqual(Colour.White, pattern.PatternAt(new Point(0, 0, 0)));
+            Assert.AreEqual(Colour.White, pattern.PatternAt(new Point(0.9, 0, 0)));
+            Assert.AreEqual(Colour.Black, pattern.PatternAt(new Point(1, 0, 0)));
+            Assert.AreEqual(Colour.White, pattern.PatternAt(new Point(2, 0, 0)));
+            Assert.AreEqual(Colour.Black, pattern.PatternAt(new Point(3, 0, 0)));
+            Assert.AreEqual(Colour.Black, pattern.PatternAt(new Point(-0.1, 0, 0)));
+            Assert.AreEqual(Colour.White, pattern.PatternAt(new Point(-1, 0, 0)));
+            Assert.AreEqual(Colour.White, pattern.PatternAt(new Point(-1.1, 0, 0)));
+            Assert.AreEqual(Colour.Black, pattern.PatternAt(new Point(-2, 0, 0)));
         }
 
         [Test]
@@ -61,9 +62,9 @@ namespace RayTracer.UnitTests
 
             s.Transform = Matrix.Scaling(2,2,2);
 
-            var pattern = new Pattern(Colour.White, Colour.Black);
+            var pattern = new StripePattern(Colour.White, Colour.Black);
 
-            var colour = pattern.StripeAtObject(s, new Point(1.5,0,0));
+            var colour = pattern.PatternAtShape(s, new Point(1.5,0,0));
 
             Assert.AreEqual(Colour.White,colour);
         }
@@ -73,10 +74,10 @@ namespace RayTracer.UnitTests
         {
             var s = new Sphere();
 
-            var pattern = new Pattern(Colour.White, Colour.Black);
+            var pattern = new StripePattern(Colour.White, Colour.Black);
             pattern.Transform = Matrix.Scaling(2, 2, 2);
 
-            var colour = pattern.StripeAtObject(s, new Point(1.5, 0, 0));
+            var colour = pattern.PatternAtShape(s, new Point(1.5, 0, 0));
 
             Assert.AreEqual(Colour.White, colour);
         }
@@ -87,12 +88,23 @@ namespace RayTracer.UnitTests
             var s = new Sphere();
             s.Transform = Matrix.Scaling(2, 2, 2);
 
-            var pattern = new Pattern(Colour.White, Colour.Black);
+            var pattern = new StripePattern(Colour.White, Colour.Black);
             pattern.Transform = Matrix.Translation(0.5, 0, 0);
 
-            var colour = pattern.StripeAtObject(s, new Point(1.5, 0, 0));
+            var colour = pattern.PatternAtShape(s, new Point(1.5, 0, 0));
 
             Assert.AreEqual(Colour.White, colour);
+        }
+
+        [Test]
+        public void GradientLinearlyInterpolatesBetweenColors()
+        {
+            var pattern = new GradientPattern(Colour.White, Colour.Black);
+
+            Assert.AreEqual(Colour.White, pattern.PatternAt(new Point(0, 0, 0)));
+            Assert.AreEqual(new Colour(0.75,0.75,0.75), pattern.PatternAt(new Point(0.25, 0, 0)));
+            Assert.AreEqual(new Colour(0.5, 0.5, 0.5), pattern.PatternAt(new Point(0.5, 0, 0)));
+            Assert.AreEqual(new Colour(0.25, 0.25, 0.25), pattern.PatternAt(new Point(0.75, 0, 0)));
         }
     }
 
