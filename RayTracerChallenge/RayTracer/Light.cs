@@ -36,7 +36,17 @@ namespace RayTracer
 
         public static Colour Lighting(Material material, Light light, Point point, Vector eyeV, Vector normalV, bool inShadow)
         {
-            var effectiveColour = material.Colour.Multiply(light.Intensity);
+            Colour materialColour;
+            if (material.Pattern != null)
+            {
+                materialColour = material.Pattern.StripeAt(point);
+            }
+            else
+            {
+                materialColour = material.Colour;
+            }
+
+            var effectiveColour = materialColour.Multiply(light.Intensity);
 
             var lightV = (light.Position - point).Normalize().ToVector();
 

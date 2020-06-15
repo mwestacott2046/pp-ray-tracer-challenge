@@ -18,6 +18,7 @@ namespace RayTracer
         public double Diffuse { get; set; }
         public double Specular { get; set; }
         public double Shininess { get; set; }
+        public Pattern Pattern { get; set; }
 
         public override bool Equals(object? obj)
         {

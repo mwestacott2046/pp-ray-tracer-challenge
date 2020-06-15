@@ -17,6 +17,7 @@ namespace RayTracer
         public double G { get; private set; }
         public double B { get; private set; }
         public static Colour Black => new Colour(0,0,0);
+        public static Colour White => new Colour(1, 1, 1);
 
         public override bool Equals(object obj)
         {
