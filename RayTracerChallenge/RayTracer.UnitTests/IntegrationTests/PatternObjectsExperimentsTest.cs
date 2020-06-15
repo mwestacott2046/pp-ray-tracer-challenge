@@ -16,9 +16,11 @@ namespace RayTracer.UnitTests.IntegrationTests
 
             world.LightSource = new Light(new Point(-10,10,-10), new Colour(1,1,1));
 
-            var roomMaterial = new Material { Colour = new Colour(1, 0.9, 0.9), Specular = 0 };
+
             var floorPlane = new Plane();
-            floorPlane.Material.Pattern = new Pattern(new Colour(0.9,0.3,0.3), new Colour(0,0.8,0.6));
+            var floorPattern = new Pattern(new Colour(0.9,0.3,0.3), new Colour(0,0.8,0.6));
+            
+            floorPlane.Material.Pattern = floorPattern;
             world.SceneObjects.Add(floorPlane);
 
             var middleSphere = new Sphere

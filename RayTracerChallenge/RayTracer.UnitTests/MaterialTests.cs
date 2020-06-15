@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
+using RayTracer.Shapes;
 
 namespace RayTracer.UnitTests
 {
@@ -24,6 +25,7 @@ namespace RayTracer.UnitTests
         [Test]
         public void LightingWithEyeBetweenLightAndSurface()
         {
+            var sceneObject = new Sphere();
             var m = new Material();
             var position = new Point(0, 0, 0);
 
@@ -31,7 +33,7 @@ namespace RayTracer.UnitTests
             var normalV = new Vector(0, 0, -1);
             var light = new Light(new Point(0, 0, -10), new Colour(1, 1, 1));
 
-            var result = Light.Lighting(m, light, position, eyeV, normalV, false);
+            var result = Light.Lighting(m, sceneObject, light, position, eyeV, normalV, false);
 
             Assert.AreEqual(new Colour(1.9, 1.9, 1.9), result);
         }
@@ -40,6 +42,7 @@ namespace RayTracer.UnitTests
         [Test]
         public void LightingWithEyeOffsetAt45deg()
         {
+            var sceneObject = new Sphere();
             var m = new Material();
             var position = new Point(0, 0, 0);
 
@@ -47,7 +50,7 @@ namespace RayTracer.UnitTests
             var normalV = new Vector(0, 0, -1);
             var light = new Light(new Point(0, 0, -10), new Colour(1, 1, 1));
 
-            var result = Light.Lighting(m, light, position, eyeV, normalV, false);
+            var result = Light.Lighting(m, sceneObject, light, position, eyeV, normalV, false);
 
             Assert.AreEqual(new Colour(1.0, 1.0, 1.0), result);
         }
@@ -56,6 +59,8 @@ namespace RayTracer.UnitTests
         [Test]
         public void LightingWithEyeOppositeOffsetAt45deg()
         {
+            var sceneObject = new Sphere();
+
             var m = new Material();
             var position = new Point(0, 0, 0);
 
@@ -63,7 +68,7 @@ namespace RayTracer.UnitTests
             var normalV = new Vector(0, 0, -1);
             var light = new Light(new Point(0, 10, -10), new Colour(1, 1, 1));
 
-            var result = Light.Lighting(m, light, position, eyeV, normalV, false);
+            var result = Light.Lighting(m, sceneObject, light, position, eyeV, normalV, false);
 
             Assert.AreEqual(new Colour(0.7364, 0.7364, 0.7364), result);
         }
@@ -72,6 +77,8 @@ namespace RayTracer.UnitTests
         [Test]
         public void LightingWithEyeInPathOfReflectionVector()
         {
+            var sceneObject = new Sphere();
+
             var m = new Material();
             var position = new Point(0, 0, 0);
 
@@ -80,7 +87,7 @@ namespace RayTracer.UnitTests
             var normalV = new Vector(0, 0, -1);
             var light = new Light(new Point(0, 10, -10), new Colour(1, 1, 1));
 
-            var result = Light.Lighting(m, light, position, eyeV, normalV, false);
+            var result = Light.Lighting(m, sceneObject, light, position, eyeV, normalV, false);
 
             Assert.AreEqual(new Colour(1.6364, 1.6364, 1.6364), result);
         }
@@ -89,6 +96,8 @@ namespace RayTracer.UnitTests
         [Test]
         public void LightingWithLightBehindTheSurface()
         {
+            var sceneObject = new Sphere();
+
             var m = new Material();
             var position = new Point(0, 0, 0);
 
@@ -96,7 +105,7 @@ namespace RayTracer.UnitTests
             var normalV = new Vector(0, 0, -1);
             var light = new Light(new Point(0, 0, 10), new Colour(1, 1, 1));
 
-            var result = Light.Lighting(m, light, position,eyeV, normalV,false);
+            var result = Light.Lighting(m, sceneObject, light, position,eyeV, normalV,false);
 
             Assert.AreEqual(new Colour(0.1,0.1,0.1), result);
         }
@@ -105,6 +114,8 @@ namespace RayTracer.UnitTests
         [Test]
         public void LightingWithSurfaceInShadow()
         {
+            var sceneObject = new Sphere();
+
             var m = new Material();
             var position = new Point(0, 0, 0);
 
@@ -113,7 +124,7 @@ namespace RayTracer.UnitTests
             var light = new Light(new Point(0, 0, -10), new Colour(1, 1, 1));
             
 
-            var result = Light.Lighting(m, light, position, eyeV, normalV, true);
+            var result = Light.Lighting(m, sceneObject, light, position, eyeV, normalV, true);
 
             Assert.AreEqual(new Colour(0.1,0.1,0.1), result);
         }
@@ -121,6 +132,8 @@ namespace RayTracer.UnitTests
         [Test]
         public void LightingWithStripePatternMaterial()
         {
+            var sceneObject = new Sphere();
+
             var m = new Material();
             m.Pattern = new Pattern(Colour.White, Colour.Black);
             m.Ambient = 1;
@@ -132,8 +145,8 @@ namespace RayTracer.UnitTests
 
             var light = new Light(new Point(0,0,-10), new Colour(1,1,1));
 
-            var c1 = Light.Lighting(m, light, new Point(0.9, 0, 0), eyeV, normalV, false);
-            var c2 = Light.Lighting(m, light, new Point(1.1, 0, 0), eyeV, normalV, false);
+            var c1 = Light.Lighting(m, sceneObject, light, new Point(0.9, 0, 0), eyeV, normalV, false);
+            var c2 = Light.Lighting(m, sceneObject, light, new Point(1.1, 0, 0), eyeV, normalV, false);
 
             Assert.AreEqual(Colour.White, c1);
             Assert.AreEqual(Colour.Black, c2);
