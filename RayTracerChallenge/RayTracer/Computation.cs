@@ -11,5 +11,6 @@ namespace RayTracer
         public ISceneObject Object { get; set; }
         public bool Inside { get; set; }
         public Point OverPoint { get; set; }
+        public Vector ReflectV { get; set; }
     }
 }

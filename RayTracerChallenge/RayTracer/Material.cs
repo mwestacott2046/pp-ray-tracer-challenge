@@ -12,6 +12,7 @@ namespace RayTracer
             Diffuse = 0.9;
             Specular = 0.9;
             Shininess = 200.0;
+            Reflective = 0.0;
         }
 
         public Colour Colour { get; set; }
@@ -20,6 +21,7 @@ namespace RayTracer
         public double Specular { get; set; }
         public double Shininess { get; set; }
         public IPattern Pattern { get; set; }
+        public double Reflective { get; set; }
 
         public override bool Equals(object? obj)
         {

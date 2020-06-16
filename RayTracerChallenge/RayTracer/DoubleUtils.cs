@@ -13,10 +13,5 @@ namespace RayTracer
             return Math.Abs(a - b) < Epsilon;
         }
 
-        public static bool DoubleEquals(double a, double b, double epsilon)
-        {
-            return Math.Abs(a - b) < epsilon;
-        }
-
     }
 }

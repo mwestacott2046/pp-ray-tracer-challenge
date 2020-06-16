@@ -185,5 +185,92 @@ namespace RayTracer.UnitTests
 
         }
 
+        [Test]
+        public void ReflectedColourForNonReflectiveMaterial()
+        {
+            var world = World.DefaultWorld;
+            var r = new Ray(new Point(0,0,0), new Vector(0,0,1));
+            var shape = world.SceneObjects[1];
+            shape.Material.Ambient = 1;
+            var i = new Intersection(1, shape);
+            var comps = i.PrepareComputations(r);
+            var colour = world.ReflectedColour(comps);
+
+            Assert.AreEqual(Colour.Black, colour);
+        }
+
+        [Test]
+        public void ReflectedColourForReflectiveMaterial()
+        {
+            var world = World.DefaultWorld;
+
+            var shape = new Plane();
+            shape.Material.Reflective = 0.5;
+            shape.Transform = Matrix.Translation(0,-1,0);
+            world.SceneObjects.Add(shape);
+
+            var r = new Ray(new Point(0, 0, -3), new Vector(0, -Math.Sqrt(2)/2, Math.Sqrt(2) / 2));
+            var i = new Intersection(Math.Sqrt(2), shape);
+            var comps = i.PrepareComputations(r);
+            var colour = world.ReflectedColour(comps);
+            var expected = new Colour(0.190332320, 0.237915, 0.14274);
+            
+            Assert.AreEqual(expected, colour);
+        }
+
+
+        [Test]
+        public void ShadeHitForReflectiveMaterial()
+        {
+            var world = World.DefaultWorld;
+
+            var shape = new Plane();
+            shape.Material.Reflective = 0.5;
+            shape.Transform = Matrix.Translation(0, -1, 0);
+            world.SceneObjects.Add(shape);
+
+            var r = new Ray(new Point(0, 0, -3), new Vector(0, -Math.Sqrt(2) / 2, Math.Sqrt(2) / 2));
+            var i = new Intersection(Math.Sqrt(2), shape);
+            var comps = i.PrepareComputations(r);
+            var colour = world.ShadeHit(comps);
+            var expected = new Colour(0.8767572, 0.9243403, 0.8291742);
+
+            Assert.AreEqual(expected, colour);
+        }
+
+        [Test]
+        public void ColourAtWithMultipleReflectiveSurfaces()
+        {
+            var w = new World();
+            w.LightSource = new Light(new Point(0,0,0), Colour.White);
+
+            var lower = new Plane {Material = {Reflective = 1}, Transform = Matrix.Translation(0, -1, 0)};
+            w.SceneObjects.Add(lower);
+            var upper = new Plane { Material = { Reflective = 1 }, Transform = Matrix.Translation(0, 1, 0) };
+            w.SceneObjects.Add(upper);
+
+            var r = new Ray(new Point(0,0,0), new Vector(0,1,0));
+
+            Assert.DoesNotThrow(() => w.ColourAt(r));
+            
+        }
+
+        [Test]
+        public void ReflectiveColourAtMaxRecursionDepth()
+        {
+            var world = World.DefaultWorld;
+
+            var shape = new Plane();
+            shape.Material.Reflective = 0.5;
+            shape.Transform = Matrix.Translation(0, -1, 0);
+            world.SceneObjects.Add(shape);
+
+            var r = new Ray(new Point(0, 0, -3), new Vector(0, -Math.Sqrt(2) / 2, Math.Sqrt(2) / 2));
+            var i = new Intersection(Math.Sqrt(2), shape);
+            var comps = i.PrepareComputations(r);
+            var colour = world.ReflectedColour(comps, 0);
+
+            Assert.AreEqual(Colour.Black, colour);
+        }
     }
 }

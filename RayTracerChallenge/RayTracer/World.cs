@@ -67,21 +67,25 @@ namespace RayTracer
             return allIntersections.ToArray();
         }
 
-        public Colour ShadeHit(Computation comp)
+        public Colour ShadeHit(Computation comp, int remaining=5)
         {
 
             var shadowed = IsShadowed(comp.OverPoint);
 
-            return Light.Lighting(comp.Object.Material,
+            var surface =  Light.Lighting(comp.Object.Material,
                 comp.Object,
                 this.LightSource, 
-                comp.Point, 
+                comp.OverPoint, 
                 comp.EyeV, 
                 comp.NormalV,
                 shadowed);
+
+            var reflected = ReflectedColour(comp, remaining);
+
+            return surface.Add(reflected);
         }
 
-        public Colour ColourAt(Ray ray)
+        public Colour ColourAt(Ray ray, int remaining=5)
         {
             var intersections = this.Intersects(ray);
 
@@ -89,7 +93,7 @@ namespace RayTracer
             if (hit != null)
             {
                 var comp = hit.PrepareComputations(ray);
-                var colour = ShadeHit(comp);
+                var colour = ShadeHit(comp, remaining);
                 return colour;
             }
 
@@ -111,5 +115,24 @@ namespace RayTracer
 
             return hit != null && hit.T < distance;
         }
+
+        public Colour ReflectedColour(Computation comps, int remaining=5)
+        {
+            if (remaining <= 0)
+            {
+                return Colour.Black;
+            }
+
+            if (DoubleUtils.DoubleEquals (comps.Object.Material.Reflective,0))
+            {
+                return Colour.Black;
+            }
+            
+            var reflectedRay = new Ray(comps.OverPoint, comps.ReflectV);
+            var colour = ColourAt(reflectedRay,remaining-1);
+
+            return colour.Multiply(comps.Object.Material.Reflective);
+        }
+
     }
 }

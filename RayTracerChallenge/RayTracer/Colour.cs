@@ -41,7 +41,7 @@ namespace RayTracer
 
         public override string ToString()
         {
-            return $"(R: {R}, G: {G}, B{B})";
+            return $"(R: {R}, G: {G}, B: {B})";
         }
 
         public Colour Add(Colour add)

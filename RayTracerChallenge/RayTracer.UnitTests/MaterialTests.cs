@@ -153,5 +153,12 @@ namespace RayTracer.UnitTests
             Assert.AreEqual(Colour.Black, c2);
         }
 
+        [Test]
+        public void SetReflectivityForDefaultMaterial()
+        {
+            var m = new Material();
+            Assert.AreEqual(0.0,m.Reflective);
+        }
+
     }
 }

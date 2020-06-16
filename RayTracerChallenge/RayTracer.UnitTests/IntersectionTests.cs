@@ -160,6 +160,18 @@ namespace RayTracer.UnitTests
             Assert.IsTrue(comps.Point.Z > comps.OverPoint.Z);
 
         }
+
+        [Test]
+        public void PreComputingTheReflectionVector()
+        {
+            var shape = new Plane();
+            var r = new Ray(new Point(0,1,-1), new Vector(0, -Math.Sqrt(2)/2, Math.Sqrt(2)/2));
+            var i = new Intersection(Math.Sqrt(2), shape);
+
+            var comps = i.PrepareComputations(r);
+
+            Assert.AreEqual(new Vector(0, Math.Sqrt(2) / 2, Math.Sqrt(2) / 2), comps.ReflectV);
+        }
     }
 
 

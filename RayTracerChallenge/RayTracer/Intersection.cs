@@ -45,6 +45,7 @@ namespace RayTracer
                 comp.Inside = false;
             }
 
+            comp.ReflectV = ray.Direction.Reflect(comp.NormalV);
             comp.OverPoint = (comp.Point + comp.NormalV * (DoubleUtils.Epsilon)).ToPoint();
 
             return comp;
