@@ -97,7 +97,7 @@ namespace RayTracer
                 return colour;
             }
 
-            return Colour.Black;
+            return ColourFactory.Black;
         }
 
         public bool IsShadowed(Point point)
@@ -120,12 +120,12 @@ namespace RayTracer
         {
             if (remaining <= 0)
             {
-                return Colour.Black;
+                return ColourFactory.Black;
             }
 
             if (DoubleUtils.DoubleEquals (comps.Object.Material.Reflective,0))
             {
-                return Colour.Black;
+                return ColourFactory.Black;
             }
             
             var reflectedRay = new Ray(comps.OverPoint, comps.ReflectV);

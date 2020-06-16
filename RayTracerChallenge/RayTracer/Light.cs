@@ -63,8 +63,8 @@ namespace RayTracer
             Colour specular;
             if (lightDotNormal < 0)
             {
-                diffuse = Colour.Black;
-                specular = Colour.Black;
+                diffuse = ColourFactory.Black;
+                specular = ColourFactory.Black;
             }
             else
             {
@@ -81,7 +81,7 @@ namespace RayTracer
 
                 if (reflectDotEye <= 0)
                 {
-                    specular = Colour.Black;
+                    specular = ColourFactory.Black;
                 }
                 else
                 {

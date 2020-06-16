@@ -52,6 +52,5 @@ namespace RayTracer.UnitTests
             Assert.AreEqual(new Colour(0.9, 0.2, 0.04), result);
         }
 
-
     }
 }

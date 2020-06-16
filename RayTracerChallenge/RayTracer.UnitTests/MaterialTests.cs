@@ -136,7 +136,7 @@ namespace RayTracer.UnitTests
             var sceneObject = new Sphere();
 
             var m = new Material();
-            m.Pattern = new StripePattern(Colour.White, Colour.Black);
+            m.Pattern = new StripePattern(ColourFactory.White, ColourFactory.Black);
             m.Ambient = 1;
             m.Diffuse = 0;
             m.Specular = 0;
@@ -149,8 +149,8 @@ namespace RayTracer.UnitTests
             var c1 = Light.Lighting(m, sceneObject, light, new Point(0.9, 0, 0), eyeV, normalV, false);
             var c2 = Light.Lighting(m, sceneObject, light, new Point(1.1, 0, 0), eyeV, normalV, false);
 
-            Assert.AreEqual(Colour.White, c1);
-            Assert.AreEqual(Colour.Black, c2);
+            Assert.AreEqual(ColourFactory.White, c1);
+            Assert.AreEqual(ColourFactory.Black, c2);
         }
 
         [Test]

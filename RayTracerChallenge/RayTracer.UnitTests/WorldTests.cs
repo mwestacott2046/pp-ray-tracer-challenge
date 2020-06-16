@@ -196,7 +196,7 @@ namespace RayTracer.UnitTests
             var comps = i.PrepareComputations(r);
             var colour = world.ReflectedColour(comps);
 
-            Assert.AreEqual(Colour.Black, colour);
+            Assert.AreEqual(ColourFactory.Black, colour);
         }
 
         [Test]
@@ -242,7 +242,7 @@ namespace RayTracer.UnitTests
         public void ColourAtWithMultipleReflectiveSurfaces()
         {
             var w = new World();
-            w.LightSource = new Light(new Point(0,0,0), Colour.White);
+            w.LightSource = new Light(new Point(0,0,0), ColourFactory.White);
 
             var lower = new Plane {Material = {Reflective = 1}, Transform = Matrix.Translation(0, -1, 0)};
             w.SceneObjects.Add(lower);
@@ -270,7 +270,7 @@ namespace RayTracer.UnitTests
             var comps = i.PrepareComputations(r);
             var colour = world.ReflectedColour(comps, 0);
 
-            Assert.AreEqual(Colour.Black, colour);
+            Assert.AreEqual(ColourFactory.Black, colour);
         }
     }
 }
