@@ -9,7 +9,7 @@ namespace RayTracer.UnitTests.IntegrationTests
     [TestFixture]
     public class PatternObjectsExperimentsTest
     {
-        [Ignore("LongRunningTest")]
+        //[Ignore("LongRunningTest")]
         [Test]
         public void RenderScene()
         {
@@ -19,9 +19,10 @@ namespace RayTracer.UnitTests.IntegrationTests
 
 
             var floorPlane = new Plane();
-            var floorPattern = new StripePattern(new Colour(0.9,0.3,0.3), new Colour(0,0.8,0.6));
-            
+            var floorPattern = new CheckerboardPattern(new Colour(0.9,0.3,0.3), new Colour(0,0.8,0.6));
+            //var floorPattern2 = new StripePattern(new Colour(0.9, 0.3, 0.3), new Colour(0, 0.8, 0.6));
             floorPlane.Material.Pattern = floorPattern;
+            floorPlane.Material.Pattern.Transform = Matrix.Translation(0,0.01,0);
             world.SceneObjects.Add(floorPlane);
 
             var middleSphere = new Sphere
@@ -32,9 +33,10 @@ namespace RayTracer.UnitTests.IntegrationTests
                     Colour = new Colour(0.1, 1, 0.5), 
                     Diffuse = 0.7, 
                     Specular = 0.2,
-                    Pattern = new StripePattern(new Colour(0.1, 1, 0.5), new Colour(0.5, 0.8, 0.6))
-        }
+                    Pattern = new CheckerboardPattern(new Colour(0.5, 1, 0.5), new Colour(0.5, 0.8, 0.6))
+                }
             };
+            middleSphere.Material.Pattern.Transform = Matrix.Scaling(0.1, 0.1, 0.1);
 
             world.SceneObjects.Add(middleSphere);
 
@@ -46,7 +48,8 @@ namespace RayTracer.UnitTests.IntegrationTests
                 {
                     Colour = new Colour(0.5, 1, 0.1),
                     Diffuse = 0.7,
-                    Specular = 0.2
+                    Specular = 0.2,
+                    Pattern = new RingPattern(new Colour(0,1,0), new Colour(0,0,1))
                 }
             };
 
@@ -59,7 +62,8 @@ namespace RayTracer.UnitTests.IntegrationTests
                 {
                     Colour = new Colour(1, 0.8, 0.1),
                     Diffuse = 0.7,
-                    Specular = 0.2
+                    Specular = 0.2,
+                    Pattern = new GradientPattern(new Colour(1,0.5,0), new Colour(0, 0.5, 1))
                 }
             };
 
