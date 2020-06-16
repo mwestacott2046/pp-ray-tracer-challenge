@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using RayTracer.Shapes;
 
 namespace RayTracer
 {
@@ -34,9 +35,20 @@ namespace RayTracer
             return false;
         }
 
-        public static Colour Lighting(Material material, Light light, Point point, Vector eyeV, Vector normalV, bool inShadow)
+        public static Colour Lighting(Material material, ISceneObject sceneObject, 
+            Light light, Point point, Vector eyeV, Vector normalV, bool inShadow)
         {
-            var effectiveColour = material.Colour.Multiply(light.Intensity);
+            Colour materialColour;
+            if (material.Pattern != null)
+            {
+                materialColour = material.Pattern.PatternAtShape(sceneObject, point);
+            }
+            else
+            {
+                materialColour = material.Colour;
+            }
+
+            var effectiveColour = materialColour.Multiply(light.Intensity);
 
             var lightV = (light.Position - point).Normalize().ToVector();
 

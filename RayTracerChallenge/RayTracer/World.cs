@@ -72,7 +72,8 @@ namespace RayTracer
 
             var shadowed = IsShadowed(comp.OverPoint);
 
-            return Light.Lighting(comp.Object.Material, 
+            return Light.Lighting(comp.Object.Material,
+                comp.Object,
                 this.LightSource, 
                 comp.Point, 
                 comp.EyeV, 
