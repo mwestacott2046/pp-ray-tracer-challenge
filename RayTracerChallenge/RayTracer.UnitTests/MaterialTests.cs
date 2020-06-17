@@ -160,5 +160,19 @@ namespace RayTracer.UnitTests
             Assert.AreEqual(0.0,m.Reflective);
         }
 
+        [Test]
+        public void SetTransparencyForDefaultMaterial()
+        {
+            var m = new Material();
+            Assert.AreEqual(0.0, m.Transparency);
+        }
+
+        [Test]
+        public void SetRefractiveIndexForDefaultMaterial()
+        {
+            var m = new Material();
+            Assert.AreEqual(1.0, m.RefractiveIndex);
+        }
+
     }
 }

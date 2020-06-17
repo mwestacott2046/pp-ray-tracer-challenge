@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml.Linq;
 using NUnit.Framework;
 using RayTracer.Shapes;
 
@@ -171,6 +172,63 @@ namespace RayTracer.UnitTests
             var comps = i.PrepareComputations(r);
 
             Assert.AreEqual(new Vector(0, Math.Sqrt(2) / 2, Math.Sqrt(2) / 2), comps.ReflectV);
+        }
+
+        [Test]
+        [TestCase(0, 1.0, 1.5)]
+        [TestCase(1, 1.5, 2.0)]
+        [TestCase(2, 2.0, 2.5)]
+        [TestCase(3, 2.5, 2.5)]
+        [TestCase(4, 2.5, 1.5)]
+        [TestCase(5, 1.5, 1.0)]
+        public void FindingN1AndN2AtIntersections(int index, double n1, double n2)
+        {
+            var sphereA = Sphere.GlassSphere();
+            sphereA.Transform = Matrix.Scaling(2,2,2);
+            sphereA.Material.RefractiveIndex = 1.5;
+
+            var sphereB = Sphere.GlassSphere();
+            sphereB.Transform = Matrix.Translation(0,0,-0.25);
+            sphereB.Material.RefractiveIndex = 2.0;
+
+            var sphereC = Sphere.GlassSphere();
+            sphereC.Transform = Matrix.Translation(0, 0, 0.25);
+            sphereC.Material.RefractiveIndex = 2.5;
+
+            var ray = new Ray(new Point(0,0,-4), new Vector(0,0,1));
+
+            var xs = new List<Intersection>
+            {
+                new Intersection(2, sphereA), 
+                new Intersection(2.75, sphereB), 
+                new Intersection(3.25, sphereC),
+                new Intersection(4.75, sphereB),
+                new Intersection(5.25, sphereC),
+                new Intersection(6, sphereA)
+            };
+
+            var comps = xs[index].PrepareComputations(ray,xs);
+
+
+
+            Assert.IsTrue(DoubleUtils.DoubleEquals(n1, comps.N1));
+            Assert.IsTrue(DoubleUtils.DoubleEquals(n2, comps.N2));
+        }
+
+        [Test]
+        public void UnderPointIsOffsetBelowSurface()
+        {
+            var ray = new Ray(new Point(0, 0, -5), new Vector(0, 0, 1));
+
+            var shape = Sphere.GlassSphere();
+            shape.Transform = Matrix.Translation(0,0,1);
+            var i = new Intersection(5, shape);
+            var xs = new List<Intersection> {i};
+
+            var comps = i.PrepareComputations(ray, xs);
+
+            Assert.Greater(comps.UnderPoint.Z, DoubleUtils.Epsilon / 2);
+            Assert.Less(comps.Point.Z, comps.UnderPoint.Z);
         }
     }
 

@@ -81,8 +81,8 @@ namespace RayTracer
                 shadowed);
 
             var reflected = ReflectedColour(comp, remaining);
-
-            return surface.Add(reflected);
+            var refracted = RefractedColour(comp, remaining);
+            return surface.Add(reflected).Add(refracted);
         }
 
         public Colour ColourAt(Ray ray, int remaining=5)
@@ -134,5 +134,36 @@ namespace RayTracer
             return colour.Multiply(comps.Object.Material.Reflective);
         }
 
+        public Colour RefractedColour(Computation comps, int remaining)
+        {
+            if (remaining <=0)
+            {
+                return ColourFactory.Black;
+            }
+
+            if (DoubleUtils.DoubleEquals( comps.Object.Material.Transparency,0))
+            {
+                return ColourFactory.Black;
+            }
+
+            var nRatio = comps.N1 / comps.N2;
+            var cosI = comps.EyeV.Dot(comps.NormalV);
+
+            var sin2T = Math.Pow(nRatio,2) * (1-Math.Pow(cosI,2));
+
+            if (sin2T > 1)
+            {
+                return ColourFactory.Black;
+            }
+
+            var cosT = Math.Sqrt(1.0 - sin2T);
+
+            var direction = (comps.NormalV.Multiply(nRatio * cosI - cosT) - comps.EyeV.Multiply( nRatio)).ToVector();
+
+            var refractRay = new Ray(comps.UnderPoint, direction);
+
+            var colour = ColourAt(refractRay, remaining - 1).Multiply(comps.Object.Material.Transparency);
+            return colour;
+        }
     }
 }

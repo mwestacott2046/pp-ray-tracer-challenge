@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.WebSockets;
-using System.Text;
 using NUnit.Framework;
+using RayTracer.Patterns;
 using RayTracer.Shapes;
 
 namespace RayTracer.UnitTests
@@ -271,6 +270,115 @@ namespace RayTracer.UnitTests
             var colour = world.ReflectedColour(comps, 0);
 
             Assert.AreEqual(ColourFactory.Black, colour);
+        }
+
+        [Test]
+        public void RefractedColourWithAnOpaqueSurface()
+        {
+            var w = World.DefaultWorld;
+            var shape = w.SceneObjects.First();
+
+            var ray = new Ray(new Point(0, 0, -5), new Vector(0, 0, 1));
+            var xs = new List<Intersection>{new Intersection(4, shape), new Intersection(6,shape)};
+
+            var comps = xs[0].PrepareComputations(ray, xs);
+            var c = w.RefractedColour(comps, 5);
+
+            Assert.AreEqual(ColourFactory.Black, c);
+        }
+
+        [Test]
+        public void RefractedColourAtMaximumRecursionDepth()
+        {
+            var w = World.DefaultWorld;
+            var shape = w.SceneObjects.First();
+            shape.Material.Transparency = 1.0;
+            shape.Material.RefractiveIndex = 1.5;
+
+
+            var ray = new Ray(new Point(0, 0, -5), new Vector(0, 0, 1));
+            var xs = new List<Intersection> { new Intersection(4, shape), new Intersection(6, shape) };
+
+            var comps = xs[0].PrepareComputations(ray, xs);
+            var c = w.RefractedColour(comps, 0);
+
+            Assert.AreEqual(ColourFactory.Black, c);
+        }
+
+        [Test]
+        public void RefractedColourUnderTotalInternalReflection()
+        {
+            var w = World.DefaultWorld;
+            var shape = w.SceneObjects.First();
+            shape.Material.Transparency = 1.0;
+            shape.Material.RefractiveIndex = 1.5;
+
+
+            var ray = new Ray(new Point(0, 0, Math.Sqrt(2)/2), new Vector(0, 1, 0));
+            var xs = new List<Intersection> {
+                new Intersection(-Math.Sqrt(2) / 2, shape), 
+                new Intersection(Math.Sqrt(2) / 2, shape)
+            };
+            
+
+            var comps = xs[1].PrepareComputations(ray, xs);
+            var c = w.RefractedColour(comps, 5);
+
+            Assert.AreEqual(ColourFactory.Black, c);
+        }
+
+        [Test]
+        public void RefractedColourWithRefractedRay()
+        {
+            var w = World.DefaultWorld;
+
+            var a = w.SceneObjects[0];
+            a.Material.Ambient = 1.0;
+            a.Material.Pattern = new TestPattern();
+
+            var b = w.SceneObjects[1];
+            b.Material.Transparency = 1.0;
+            b.Material.RefractiveIndex = 1.5;
+
+            var ray = new Ray(new Point(0,0,0.1), new Vector(0,1,0));
+
+            var xs = new List<Intersection>
+            {
+                new Intersection(-0.9899,a),
+                new Intersection(-0.4899,b),
+                new Intersection(0.4899,b),
+                new Intersection(0.9899,a)
+            };
+
+            var comps = xs[2].PrepareComputations(ray, xs);
+            var c = w.RefractedColour(comps, 5);
+
+            Assert.AreEqual(new Colour(0, 0.99887, 0.04721), c);
+
+        }
+
+        [Test]
+        public void ShadeHitWithTransparentMaterial()
+        {
+            var w = World.DefaultWorld;
+            var floor = new Plane();
+            floor.Transform = Matrix.Translation(0,-1,0);
+            floor.Material.Transparency = 0.5;
+            floor.Material.RefractiveIndex = 1.5;
+            w.SceneObjects.Add(floor);
+
+            var ball = new Sphere();
+            ball.Transform = Matrix.Translation(0, -3.5, -0.5);
+            ball.Material.Colour = new Colour(1,0,0);
+            ball.Material.Ambient = 0.5;
+            w.SceneObjects.Add(ball);
+
+            var ray = new Ray(new Point(0,0,-3), new Vector(0, -(Math.Sqrt(2) / 2), Math.Sqrt(2) / 2));
+            var xs = new List<Intersection>{new Intersection(Math.Sqrt(2),floor)};
+            var comps = xs[0].PrepareComputations(ray, xs);
+            var c = w.ShadeHit(comps, 5);
+
+            Assert.AreEqual(new Colour(0.93642, 0.68642, 0.68642), c);
         }
     }
 }

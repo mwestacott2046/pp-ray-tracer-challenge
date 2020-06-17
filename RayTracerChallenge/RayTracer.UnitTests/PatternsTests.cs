@@ -147,6 +147,53 @@ namespace RayTracer.UnitTests
             Assert.AreEqual(ColourFactory.White, pattern.PatternAt(new Point(0, 0, 0.99)));
             Assert.AreEqual(ColourFactory.Black, pattern.PatternAt(new Point(0, 0, 1.01)));
         }
+
+        [Test]
+        public void TestPatternDefaultTransform()
+        {
+            var testPattern = new TestPattern();
+
+            Assert.AreEqual(Matrix.IdentityMatrix, testPattern.Transform);
+        }
+
+        [Test]
+        public void TestPatternAssignTransform()
+        {
+            var testPattern = new TestPattern {Transform = Matrix.Translation(1, 2, 3)};
+
+            Assert.AreEqual(Matrix.Translation(1,2,3), testPattern.Transform);
+        }
+
+        [Test]
+        public void TestPatternWithObjectTransform()
+        {
+            var sphere = new Sphere();
+            sphere.Transform = Matrix.Scaling(2, 2, 2);
+            var pattern = new TestPattern();
+            var c = pattern.PatternAtShape(sphere, new Point(2, 3, 4));
+            Assert.AreEqual(new Colour(1,1.5,2), c);
+        }
+
+        [Test]
+        public void TestPatternWithPatternTransform()
+        {
+            var sphere = new Sphere();
+            var pattern = new TestPattern();
+            pattern.Transform = Matrix.Scaling(2, 2, 2);
+            var c = pattern.PatternAtShape(sphere, new Point(2, 3, 4));
+            Assert.AreEqual(new Colour(1, 1.5, 2), c);
+        }
+
+        [Test]
+        public void TestPatternWithObjectAndPatternTransform()
+        {
+            var sphere = new Sphere();
+            sphere.Transform = Matrix.Scaling(2, 2, 2);
+            var pattern = new TestPattern();
+            pattern.Transform = Matrix.Translation(0.5, 1, 1.5);
+            var c = pattern.PatternAtShape(sphere, new Point(2.5, 3, 3.5));
+            Assert.AreEqual(new Colour(0.75, 0.5, 0.25), c);
+        }
     }
 
 }
