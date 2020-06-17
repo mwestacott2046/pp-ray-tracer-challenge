@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace RayTracer
 {
@@ -78,5 +81,47 @@ namespace RayTracer
 
             return image;
         }
+
+        public Canvas RenderP(World world)
+        {
+            var image = new Canvas(HSize, VSize);
+
+            var pixelStorage = new ConcurrentBag<RayPixelResult>();
+            for (var y = 0; y < VSize; y++)
+            {
+                var xEnum = Enumerable.Range(0, HSize).ToList();
+
+                Parallel.ForEach(xEnum, (x) =>
+                {
+                    var ray = RayForPixel(x, y);
+                    var colour = world.ColourAt(ray);
+                    pixelStorage.Add(new RayPixelResult(x, y, colour));
+
+                });
+            }
+
+            foreach (var pixel in pixelStorage)
+            {
+                image.SetPixel(pixel.X,pixel.Y, pixel.C);
+            }
+            return image;
+        }
+    }
+
+    public class RayPixelResult
+    {
+        public RayPixelResult(int x, int y, Colour c)
+        {
+            X = x;
+            Y = y;
+            C= c;
+
+        }
+
+        public Colour C { get;}
+
+        public int Y { get;}
+
+        public int X { get; }
     }
 }
