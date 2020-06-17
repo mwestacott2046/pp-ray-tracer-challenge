@@ -380,5 +380,30 @@ namespace RayTracer.UnitTests
 
             Assert.AreEqual(new Colour(0.93642, 0.68642, 0.68642), c);
         }
+
+        [Test]
+        public void ShadeHitWithReflectiveTransparentMaterial()
+        {
+            var w = World.DefaultWorld;
+            var floor = new Plane();
+            floor.Transform = Matrix.Translation(0, -1, 0);
+            floor.Material.Transparency = 0.5;
+            floor.Material.Reflective = 0.5;
+            floor.Material.RefractiveIndex = 1.5;
+            w.SceneObjects.Add(floor);
+
+            var ball = new Sphere();
+            ball.Transform = Matrix.Translation(0, -3.5, -0.5);
+            ball.Material.Colour = new Colour(1, 0, 0);
+            ball.Material.Ambient = 0.5;
+            w.SceneObjects.Add(ball);
+
+            var ray = new Ray(new Point(0, 0, -3), new Vector(0, -(Math.Sqrt(2) / 2), Math.Sqrt(2) / 2));
+            var xs = new List<Intersection> { new Intersection(Math.Sqrt(2), floor) };
+            var comps = xs[0].PrepareComputations(ray, xs);
+            var c = w.ShadeHit(comps, 5);
+
+            Assert.AreEqual(new Colour(0.93391, 0.69643, 0.69243), c);
+        }
     }
 }

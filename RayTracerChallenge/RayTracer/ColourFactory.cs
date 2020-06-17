@@ -39,5 +39,7 @@ namespace RayTracer
         public static Colour Silver => new Colour(0.75, 0.75, 0.75);
         public static Colour Grey => new Colour(0.5, 0.5, 0.5);
 
+        public static Colour Purple => new Colour(0.5,0,0.5);
+
     }
 }

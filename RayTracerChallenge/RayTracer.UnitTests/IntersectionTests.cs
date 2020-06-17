@@ -230,6 +230,53 @@ namespace RayTracer.UnitTests
             Assert.Greater(comps.UnderPoint.Z, DoubleUtils.Epsilon / 2);
             Assert.Less(comps.Point.Z, comps.UnderPoint.Z);
         }
+
+        [Test]
+        public void SchlickUnderTotalInternalReflection()
+        {
+            var shape = Sphere.GlassSphere();
+            var ray = new Ray(new Point(0,0,Math.Sqrt(2)/2), new Vector(0,1,0));
+            var xs = new List<Intersection>
+            {
+                new Intersection(-Math.Sqrt(2)/2,shape),
+                new Intersection(Math.Sqrt(2)/2,shape)
+            };
+
+            var comps = xs[1].PrepareComputations(ray, xs);
+            var reflectance = SchlickReflectance.Schlick(comps);
+            Assert.AreEqual(1.0,reflectance);
+        }
+
+        [Test]
+        public void SchlickWithPerpendicularViewingAngle()
+        {
+            var shape = Sphere.GlassSphere();
+            var ray = new Ray(new Point(0, 0, 0), new Vector(0, 1, 0));
+            var xs = new List<Intersection>
+            {
+                new Intersection(-1, shape),
+                new Intersection(1, shape)
+            };
+
+            var comps = xs[1].PrepareComputations(ray, xs);
+            var reflectance = SchlickReflectance.Schlick(comps);
+            Assert.IsTrue(DoubleUtils.DoubleEquals( 0.04, reflectance));
+        }
+
+        [Test]
+        public void SchlickWithSmallAngleAndN2GreaterThanN1()
+        {
+            var shape = Sphere.GlassSphere();
+            var ray = new Ray(new Point(0, 0.99, -2), new Vector(0, 0, 1));
+            var xs = new List<Intersection>
+            {
+                new Intersection(1.8589, shape),
+            };
+
+            var comps = xs[0].PrepareComputations(ray, xs);
+            var reflectance = SchlickReflectance.Schlick(comps);
+            Assert.IsTrue(DoubleUtils.DoubleEquals( 0.48873, reflectance));
+        }
     }
 
 

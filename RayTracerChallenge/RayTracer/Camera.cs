@@ -6,16 +6,16 @@ namespace RayTracer
 {
     public class Camera
     {
-        public int HSize { get; private set; }
-        public int VSize { get; private set; }
-        public double FieldOfView { get; private set; }
+        public int HSize { get; }
+        public int VSize { get; }
+        public double FieldOfView { get; }
         public Matrix Transform { get; set; }
 
-        public double HalfWidth { get; private set; }
+        public double HalfWidth { get;  }
 
-        public double HalfHeight { get; private set; }
+        public double HalfHeight { get; }
 
-        public double PixelSize { get; private set; }
+        public double PixelSize { get; }
 
         public Camera(int hSize, int vSize, double fieldOfView)
         {
