@@ -10,6 +10,7 @@ namespace RayTracer.Shapes
         {
             Material = new Material();
             Transform = Matrix.IdentityMatrix;
+            CastsNoShadow = false;
         }
 
         public Vector NormalAt(Point worldPoint)
@@ -39,6 +40,8 @@ namespace RayTracer.Shapes
             var localRay = ray.Transform(this.Transform.Inverse());
             return LocalIntersects(localRay);
         }
+
+        public bool CastsNoShadow { get; set; }
 
         protected virtual Intersection[] LocalIntersects(Ray localRay)
         {

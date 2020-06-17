@@ -69,8 +69,8 @@ namespace RayTracer
 
         public Colour ShadeHit(Computation comp, int remaining=5)
         {
-
-            var shadowed = IsShadowed(comp.OverPoint);
+            
+            var shadowed = !comp.Object.CastsNoShadow && IsShadowed(comp.OverPoint);
 
             var surface =  Light.Lighting(comp.Object.Material,
                 comp.Object,

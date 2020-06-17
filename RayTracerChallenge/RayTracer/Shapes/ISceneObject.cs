@@ -9,5 +9,6 @@ namespace RayTracer.Shapes
 
         public Matrix Transform { get; }
         Intersection[] Intersects(Ray ray);
+        bool CastsNoShadow { get; }
     }
 }
