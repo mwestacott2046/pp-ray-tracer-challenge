@@ -59,6 +59,11 @@ namespace RayTracer.Shapes
             return new[] { new Intersection(t1, this), new Intersection(t2, this) };
 
         }
-        
+
+        public static Sphere GlassSphere()
+        {
+            var sphere = new Sphere {Material = {Transparency = 1.0, RefractiveIndex = 1.5}};
+            return sphere;
+        }
     }
 }

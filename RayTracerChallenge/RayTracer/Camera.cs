@@ -1,21 +1,24 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace RayTracer
 {
     public class Camera
     {
-        public int HSize { get; private set; }
-        public int VSize { get; private set; }
-        public double FieldOfView { get; private set; }
+        public int HSize { get; }
+        public int VSize { get; }
+        public double FieldOfView { get; }
         public Matrix Transform { get; set; }
 
-        public double HalfWidth { get; private set; }
+        public double HalfWidth { get;  }
 
-        public double HalfHeight { get; private set; }
+        public double HalfHeight { get; }
 
-        public double PixelSize { get; private set; }
+        public double PixelSize { get; }
 
         public Camera(int hSize, int vSize, double fieldOfView)
         {
@@ -78,5 +81,47 @@ namespace RayTracer
 
             return image;
         }
+
+        public Canvas RenderP(World world)
+        {
+            var image = new Canvas(HSize, VSize);
+
+            var pixelStorage = new ConcurrentBag<RayPixelResult>();
+            for (var y = 0; y < VSize; y++)
+            {
+                var xEnum = Enumerable.Range(0, HSize).ToList();
+
+                Parallel.ForEach(xEnum, (x) =>
+                {
+                    var ray = RayForPixel(x, y);
+                    var colour = world.ColourAt(ray);
+                    pixelStorage.Add(new RayPixelResult(x, y, colour));
+
+                });
+            }
+
+            foreach (var pixel in pixelStorage)
+            {
+                image.SetPixel(pixel.X,pixel.Y, pixel.C);
+            }
+            return image;
+        }
+    }
+
+    public class RayPixelResult
+    {
+        public RayPixelResult(int x, int y, Colour c)
+        {
+            X = x;
+            Y = y;
+            C= c;
+
+        }
+
+        public Colour C { get;}
+
+        public int Y { get;}
+
+        public int X { get; }
     }
 }

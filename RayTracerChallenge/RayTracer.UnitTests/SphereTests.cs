@@ -251,6 +251,16 @@ namespace RayTracer.UnitTests
             Assert.AreEqual(sphere, xs[1].Object);
         }
 
+        [Test]
+        public void CreateGlassSphere()
+        {
+            var gs = Sphere.GlassSphere();
+
+            Assert.AreEqual(Matrix.IdentityMatrix,gs.Transform);
+            Assert.AreEqual(1.0, gs.Material.Transparency);
+            Assert.AreEqual(1.5, gs.Material.RefractiveIndex);
+        }
+
 
     }
 }

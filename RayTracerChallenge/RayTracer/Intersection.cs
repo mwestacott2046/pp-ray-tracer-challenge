@@ -23,8 +23,13 @@ namespace RayTracer
             return list;
         }
 
-        public Computation PrepareComputations(Ray ray)
+        public Computation PrepareComputations(Ray ray, List<Intersection> xs = null)
         {
+            if (xs == null)
+            {
+                xs = new List<Intersection> {this};
+            }
+
             var comp = new Computation
             {
                 T = this.T, 
@@ -45,7 +50,52 @@ namespace RayTracer
                 comp.Inside = false;
             }
 
+            comp.ReflectV = ray.Direction.Reflect(comp.NormalV);
             comp.OverPoint = (comp.Point + comp.NormalV * (DoubleUtils.Epsilon)).ToPoint();
+            comp.UnderPoint = (comp.Point - comp.NormalV * (DoubleUtils.Epsilon)).ToPoint();
+
+
+            var containers = new List<ISceneObject>();
+
+            foreach (var intersection in xs)
+            {
+                if (intersection.Equals(this))
+                {
+                    if (!containers.Any())
+                    {
+                        comp.N1 = 1.0;
+                    }
+                    else
+                    {
+                        var last = containers.Last();
+                        comp.N1 = last.Material.RefractiveIndex;
+                    }
+                }
+
+                if (containers.Contains(intersection.Object))
+                {
+                    containers.Remove(intersection.Object);
+                }
+                else
+                {
+                    containers.Add(intersection.Object);
+                }
+
+                if (intersection == this)
+                {
+                    if (!containers.Any())
+                    {
+                        comp.N2 = 1.0;
+                    }
+                    else
+                    {
+                        var last = containers.Last();
+                        comp.N2 = last.Material.RefractiveIndex;
+                    }
+
+                    break;
+                }
+            }
 
             return comp;
         }
