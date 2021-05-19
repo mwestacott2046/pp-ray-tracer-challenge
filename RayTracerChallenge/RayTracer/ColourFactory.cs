@@ -9,8 +9,8 @@ namespace RayTracer
         public static Colour FromRgbInt(int red, int green, int blue)
         {
             var r = ConvertColourDigit(red);
-            var g = ConvertColourDigit(red);
-            var b = ConvertColourDigit(red);
+            var g = ConvertColourDigit(green);
+            var b = ConvertColourDigit(blue);
             return new Colour(r, g, b);
         }
 
